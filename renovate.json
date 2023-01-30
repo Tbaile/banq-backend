@@ -1,0 +1,22 @@
+{
+    "extends": [
+        "config:base"
+    ],
+    "schedule": [
+        "before 8:00am every sunday"
+    ],
+    "packageRules": [
+        {
+            "matchPackageNames": [
+                "php"
+            ],
+            "allowedVersions": "<= 8.2"
+        },
+        {
+            "matchPackageNames": [
+                "postgres"
+            ],
+            "allowedVersions": "<= 15.1"
+        }
+    ]
+}

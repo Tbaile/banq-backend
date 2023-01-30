@@ -1,0 +1,55 @@
+services:
+    database:
+        image: postgres:15.1-alpine
+        healthcheck:
+            test: [ "CMD", "pg_isready", "-q", "-d", $DB_DATABASE, "-U", $DB_USERNAME ]
+        volumes:
+            - database:/var/lib/postgresql/data
+        environment:
+            POSTGRES_DB: $DB_DATABASE
+            POSTGRES_USER: $DB_USERNAME
+            POSTGRES_PASSWORD: $DB_PASSWORD
+    setup:
+        image: ghcr.io/thegardenboys/banq-server-app:latest
+        depends_on:
+            database:
+                condition: service_healthy
+        volumes:
+            - bootstrap:/var/www/html/bootstrap
+            - storage:/var/www/html/storage
+        secrets:
+            -   source: env_file
+                target: /var/www/html/.env
+        environment:
+            ROLE: setup
+    app:
+        image: ghcr.io/thegardenboys/banq-server-app:latest
+        depends_on:
+            setup:
+                condition: service_completed_successfully
+        volumes:
+            - bootstrap:/var/www/html/bootstrap
+            - storage:/var/www/html/storage
+        secrets:
+            -   source: env_file
+                target: /var/www/html/.env
+    web:
+        image: ghcr.io/thegardenboys/banq-server-web:latest
+        depends_on:
+            app:
+                condition: service_started
+        ports:
+            - "80"
+        environment:
+            APP_DOMAIN: localhost
+            FPM_URL: app
+            FPM_PORT: 9000
+
+volumes:
+    bootstrap: { }
+    storage: { }
+    database: { }
+
+secrets:
+    env_file:
+        file: .env
