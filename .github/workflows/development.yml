@@ -8,5 +8,9 @@ on:
   workflow_dispatch:
 
 jobs:
+  test-app:
+    uses: ./.github/workflows/test.yml
   build-images:
     uses: ./.github/workflows/build.yml
+    needs:
+      - test-app

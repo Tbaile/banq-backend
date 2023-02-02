@@ -44,6 +44,17 @@ services:
             APP_DOMAIN: localhost
             FPM_URL: app
             FPM_PORT: 9000
+    testing:
+        image: ghcr.io/thegardenboys/banq-backend-app:testing
+        depends_on:
+            database:
+                condition: service_healthy
+        secrets:
+            -   source: env_file
+                target: /var/www/html/.env
+        environment:
+            XDEBUG_MODE: coverage
+        command: php artisan test --parallel --coverage-cobertura coverage.cobertura.xml
 
 volumes:
     bootstrap: { }
