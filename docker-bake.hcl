@@ -1,7 +1,6 @@
 target "base" {
     target  = "production"
     context = "."
-    output  = ["type=docker"]
 }
 
 target "app" {
@@ -17,6 +16,7 @@ target "app-development" {
     cache-from = [
         "ghcr.io/thegardenboys/banq-server-app:master-cache"
     ]
+    output  = ["type=docker"]
 }
 
 target "web" {
@@ -32,6 +32,7 @@ target "web-development" {
     cache-from = [
         "ghcr.io/thegardenboys/banq-server-web:master-cache"
     ]
+    output  = ["type=docker"]
 }
 
 group "production" {
