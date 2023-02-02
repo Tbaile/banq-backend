@@ -10,7 +10,7 @@ services:
             POSTGRES_USER: $DB_USERNAME
             POSTGRES_PASSWORD: $DB_PASSWORD
     setup:
-        image: ghcr.io/thegardenboys/banq-server-app:latest
+        image: ghcr.io/thegardenboys/banq-backend-app:latest
         depends_on:
             database:
                 condition: service_healthy
@@ -23,7 +23,7 @@ services:
         environment:
             ROLE: setup
     app:
-        image: ghcr.io/thegardenboys/banq-server-app:latest
+        image: ghcr.io/thegardenboys/banq-backend-app:latest
         depends_on:
             setup:
                 condition: service_completed_successfully
@@ -34,7 +34,7 @@ services:
             -   source: env_file
                 target: /var/www/html/.env
     web:
-        image: ghcr.io/thegardenboys/banq-server-web:latest
+        image: ghcr.io/thegardenboys/banq-backend-web:latest
         depends_on:
             app:
                 condition: service_started
@@ -46,6 +46,8 @@ services:
             FPM_PORT: 9000
     testing:
         image: ghcr.io/thegardenboys/banq-backend-app:testing
+        profiles:
+            - testing
         depends_on:
             database:
                 condition: service_healthy
