@@ -3,16 +3,19 @@
   <component name="JsonSchemaMappingsProjectConfiguration">
     <state>
       <map>
-        <entry key="docker-compose.yml">
+        <entry key="GitHub Workflow">
           <value>
             <SchemaInfo>
-              <option name="name" value="docker-compose.yml" />
-              <option name="relativePathToSchema" value="https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json" />
+              <option name="name" value="GitHub Workflow" />
+              <option name="relativePathToSchema" value="https://json.schemastore.org/github-workflow.json" />
               <option name="applicationDefined" value="true" />
               <option name="patterns">
                 <list>
                   <Item>
-                    <option name="path" value="deploy/docker/docker-compose.yml" />
+                    <option name="path" value=".github/workflows/build.yml" />
+                  </Item>
+                  <Item>
+                    <option name="path" value=".github/workflows/development.yml" />
                   </Item>
                 </list>
               </option>
