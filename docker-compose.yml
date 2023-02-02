@@ -39,9 +39,19 @@ services:
         networks:
             - sail
         healthcheck:
-            test: ["CMD", "pg_isready", "-q", "-d", "${DB_DATABASE}", "-U", "${DB_USERNAME}"]
+            test: [ "CMD", "pg_isready", "-q", "-d", "${DB_DATABASE}", "-U", "${DB_USERNAME}" ]
             retries: 3
             timeout: 5s
+    testing:
+        image: ghcr.io/thegardenboys/banq-backend-app:testing
+        depends_on:
+            pgsql:
+                condition: service_healthy
+        env_file:
+            - .env
+        environment:
+            XDEBUG_MODE: coverage
+        command: [ "php", "artisan", "test", "--parallel", "--coverage-cobertura", "coverage.cobertura.xml" ]
 networks:
     sail:
         driver: bridge
