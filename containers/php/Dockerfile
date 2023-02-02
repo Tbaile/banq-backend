@@ -15,6 +15,9 @@ COPY composer.lock .
 RUN composer check-platform-reqs \
     && composer i --no-scripts --no-dev
 
+FROM vendor as vendor_dev
+RUN composer i --no-scripts
+
 FROM base as application
 COPY app ./app
 COPY bootstrap ./bootstrap
@@ -28,6 +31,17 @@ COPY storage ./storage
 COPY artisan .
 COPY composer.json .
 COPY composer.lock .
+
+FROM base as testing
+RUN install-php-extensions xdebug
+COPY --from=application --chown=www-data:www-data /var/www/html /var/www/html
+COPY --from=vendor_dev --chown=www-data:www-data /var/www/html/vendor /var/www/html/vendor
+COPY --chown=www-data:www-data tests ./tests
+COPY --chown=www-data:www-data phpunit.xml phpunit.xml
+RUN composer dump-autoload \
+    && mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
+USER www-data
+ENTRYPOINT [""]
 
 FROM base as production
 COPY --from=application --chown=www-data:www-data /var/www/html /var/www/html

@@ -11,12 +11,12 @@ target "app" {
 target "app-development" {
     inherits = ["app"]
     tags     = [
-        "ghcr.io/thegardenboys/banq-server-app:latest"
+        "ghcr.io/thegardenboys/banq-backend-app:latest"
     ]
     cache-from = [
-        "ghcr.io/thegardenboys/banq-server-app:master-cache"
+        "ghcr.io/thegardenboys/banq-backend-app:master-cache"
     ]
-    output  = ["type=docker"]
+    output = ["type=docker"]
 }
 
 target "web" {
@@ -27,12 +27,20 @@ target "web" {
 target "web-development" {
     inherits = ["web"]
     tags     = [
-        "ghcr.io/thegardenboys/banq-server-web:latest"
+        "ghcr.io/thegardenboys/banq-backend-web:latest"
     ]
     cache-from = [
-        "ghcr.io/thegardenboys/banq-server-web:master-cache"
+        "ghcr.io/thegardenboys/banq-backend-web:master-cache"
     ]
-    output  = ["type=docker"]
+    output = ["type=docker"]
+}
+
+target "app-testing" {
+    inherits = ["app-development"]
+    target   = "testing"
+    tags     = [
+        "ghcr.io/thegardenboys/banq-backend-app:testing"
+    ]
 }
 
 group "production" {
