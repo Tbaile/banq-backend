@@ -40,8 +40,10 @@ COPY --chown=www-data:www-data tests ./tests
 COPY --chown=www-data:www-data phpunit.xml phpunit.xml
 RUN composer dump-autoload \
     && mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
+ENV XDEBUG_MODE=coverage
 USER www-data
 ENTRYPOINT [""]
+CMD ["php", "artisan", "test", "--parallel", "--coverage-cobertura", "coverage.cobertura.xml"]
 
 FROM base as production
 COPY --from=application --chown=www-data:www-data /var/www/html /var/www/html

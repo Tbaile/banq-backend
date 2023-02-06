@@ -50,7 +50,4 @@ jobs:
 
       - name: Run Testing
         run: |
-          cp .env.example deploy/docker/.env
-          cd deploy/docker
-          echo "APP_KEY=base64:2bUUbbptoA/6QgCf/FihBkPS8LyE8spxS74YIEYu+UQ=" >> .env
-          docker compose run testing
+          docker compose -f docker-compose.testing.yml run --rm testing
