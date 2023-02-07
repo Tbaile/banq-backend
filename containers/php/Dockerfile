@@ -6,7 +6,7 @@ RUN install-php-extensions \
     opcache \
     && apk add --no-cache \
     fcgi
-COPY --from=composer:2.5.1 /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:2.5.2 /usr/bin/composer /usr/local/bin/composer
 ARG COMPOSER_ALLOW_SUPERUSER=1
 
 FROM base as vendor
