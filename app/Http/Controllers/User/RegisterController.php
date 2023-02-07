@@ -1,21 +1,22 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
-use App\Http\Requests\StoreUserRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
-class UserController extends Controller
+class RegisterController extends Controller
 {
     /**
-     * Store a newly created resource in storage.
+     * Register the user.
      *
-     * @param  \App\Http\Requests\StoreUserRequest  $request
+     * @param  \App\Http\Requests\RegisterRequest  $request
      * @return \App\Http\Resources\UserResource
      */
-    public function store(StoreUserRequest $request): UserResource
+    public function __invoke(RegisterRequest $request): UserResource
     {
         $user = User::make($request->only('name', 'email'));
         $user->password = Hash::make($request->input('password'));

@@ -8,16 +8,18 @@ uses(RefreshDatabase::class);
 test('user can be created', function () {
     $user = User::factory()->make();
 
-    $response = $this->postJson('/api/user', [
+    $response = $this->postJson('/api/register', [
         'name' => $user->name,
         'email' => $user->email,
         'password' => fake()->password,
     ]);
 
     $response->assertCreated()
-        ->assertJsonFragment([
-            'name' => $user->name,
-            'email' => $user->email,
+        ->assertJson([
+            'data' => [
+                'name' => $user->name,
+                'email' => $user->email,
+            ],
         ]);
 
     $this->assertDatabaseHas(User::class, [
