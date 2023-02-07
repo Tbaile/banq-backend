@@ -21,7 +21,7 @@
         "pestphp/pest": "1.22.3",
         "pestphp/pest-plugin-laravel": "1.4.0",
         "pestphp/pest-plugin-parallel": "1.2.1",
-        "phpunit/phpunit": "9.5.28",
+        "phpunit/phpunit": "9.6.3",
         "spatie/laravel-ignition": "1.6.4"
     },
     "autoload": {
