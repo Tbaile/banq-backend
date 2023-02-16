@@ -27,3 +27,18 @@ test('user can be created', function () {
         'email' => $user->email,
     ]);
 });
+
+test('no duplicate mail can be used', function () {
+    $user = User::factory()->create();
+    $invalidUser = User::factory()->make([
+        'email' => $user->email
+    ]);
+
+    $this->postJson('/api/register', [
+        'name' => $invalidUser->name,
+        'email' => $invalidUser->email,
+        'password' => fake()->password,
+    ])->assertInvalid([
+        'email'
+    ]);
+});
