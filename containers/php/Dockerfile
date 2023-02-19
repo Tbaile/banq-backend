@@ -1,4 +1,4 @@
-FROM php:8.2.2-fpm-alpine as base
+FROM php:8.2.3-fpm-alpine as base
 WORKDIR /var/www/html
 COPY --from=mlocati/php-extension-installer:2.0.2 /usr/bin/install-php-extensions /usr/local/sbin/install-php-extensions
 RUN install-php-extensions \
