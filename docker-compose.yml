@@ -1,50 +1,45 @@
-# For more information: https://laravel.com/docs/sail
-version: '3'
+name: banq-development
 services:
-    laravel.test:
-        build:
-            context: ./vendor/laravel/sail/runtimes/8.2
-            dockerfile: Dockerfile
-            args:
-                WWWGROUP: '${WWWGROUP}'
-        image: sail-8.2/app
-        extra_hosts:
-            - 'host.docker.internal:host-gateway'
-        ports:
-            - '${APP_PORT:-80}:80'
-            - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
+    database:
+        image: postgres:15.1-alpine
+        healthcheck:
+            test: [ "CMD", "pg_isready", "-q", "-d", $DB_DATABASE, "-U", $DB_USERNAME ]
+            interval: 1s
+            start_period: 10s
+        volumes:
+            - database:/var/lib/postgresql/data
         environment:
-            WWWUSER: '${WWWUSER}'
-            LARAVEL_SAIL: 1
-            XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
-            XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
+            POSTGRES_DB: $DB_DATABASE
+            POSTGRES_USER: $DB_USERNAME
+            POSTGRES_PASSWORD: $DB_PASSWORD
+
+    app:
+        image: ghcr.io/thegardenboys/banq-backend-app:development
+        healthcheck:
+            test: [ "CMD-SHELL", "netstat", "-ltn", "|", "grep", "-c", "9000" ]
+            interval: 1s
+            start_period: 5s
+        depends_on:
+            database:
+                condition: service_healthy
         volumes:
             - '.:/var/www/html'
-        networks:
-            - sail
-        depends_on:
-            - pgsql
-    pgsql:
-        image: 'postgres:15.1-alpine'
-        ports:
-            - '${FORWARD_DB_PORT:-5432}:5432'
-        environment:
-            PGPASSWORD: '${DB_PASSWORD:-secret}'
-            POSTGRES_DB: '${DB_DATABASE}'
-            POSTGRES_USER: '${DB_USERNAME}'
-            POSTGRES_PASSWORD: '${DB_PASSWORD:-secret}'
-        volumes:
-            - 'sail-pgsql:/var/lib/postgresql/data'
-            - './vendor/laravel/sail/database/pgsql/create-testing-database.sql:/docker-entrypoint-initdb.d/10-create-testing-database.sql'
-        networks:
-            - sail
+    web:
+        image: ghcr.io/thegardenboys/banq-backend-web:development
         healthcheck:
-            test: [ "CMD", "pg_isready", "-q", "-d", "${DB_DATABASE}", "-U", "${DB_USERNAME}" ]
-            retries: 3
-            timeout: 5s
-networks:
-    sail:
-        driver: bridge
+            interval: 1s
+            start_period: 5s
+        depends_on:
+            app:
+                condition: service_healthy
+        volumes:
+            - '.:/var/www/html'
+        ports:
+            - "80"
+        environment:
+            APP_DOMAIN: localhost
+            FPM_URL: app
+            FPM_PORT: 9000
+
 volumes:
-    sail-pgsql:
-        driver: local
+    database: { }

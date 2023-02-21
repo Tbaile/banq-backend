@@ -3,7 +3,7 @@ set -e
 
 ROLE=${ROLE:-app}
 
-if [ -n "$1" ]; then
+if [ $# -gt 0 ]; then
     exec "$@"
 else
     if [ "$ROLE" = "app" ]; then

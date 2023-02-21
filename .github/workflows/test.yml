@@ -44,7 +44,7 @@ jobs:
         with:
           files: |
             ./docker-bake.hcl
-          targets: app-testing
+          targets: testing
           set: |
             *.cache-from=type=registry,ref=${{ steps.cache-app.outputs.tags }}
 
