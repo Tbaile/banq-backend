@@ -4,6 +4,8 @@ services:
     image: postgres:15.1-alpine
     healthcheck:
       test: [ "CMD", "pg_isready", "-q", "-d", "testing", "-U", "testing" ]
+      interval: 1s
+      start_period: 10s
     volumes:
       - database:/var/lib/postgresql/data
     environment:
