@@ -12,9 +12,6 @@ class RegisterController extends Controller
 {
     /**
      * Register the user.
-     *
-     * @param  \App\Http\Requests\RegisterRequest  $request
-     * @return \App\Http\Resources\UserResource
      */
     public function __invoke(RegisterRequest $request): UserResource
     {

@@ -8,8 +8,6 @@ class RegisterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
     public function authorize(): bool
     {
@@ -26,7 +24,7 @@ class RegisterRequest extends FormRequest
         return [
             'name' => 'required|string',
             'email' => 'required|email|unique:App\Models\User,email',
-            'password' => 'required'
+            'password' => 'required',
         ];
     }
 }
