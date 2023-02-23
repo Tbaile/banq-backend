@@ -24,7 +24,7 @@ class SetupCommand extends Command
     /**
      * Execute the console command.
      */
-    public function handle(): int
+    public function handle(): void
     {
         $this->call('config:cache');
         $this->call('view:cache');
@@ -35,7 +35,5 @@ class SetupCommand extends Command
         $this->call('migrate', [
             '--force' => true,
         ]);
-
-        return self::SUCCESS;
     }
 }
