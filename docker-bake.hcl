@@ -1,14 +1,8 @@
-variable "WWWUID" {
-    default = 1000
-}
-
-variable "WWWGID" {
-    default = 1000
-}
-
+## Production Build Specs
 target "base" {
     target  = "production"
     context = "."
+    output  = ["type=docker"]
 }
 
 target "app" {
@@ -20,7 +14,29 @@ target "app" {
     cache-from = [
         "ghcr.io/thegardenboys/banq-backend-app:master-cache"
     ]
-    output = ["type=docker"]
+}
+
+target "web" {
+    inherits   = ["base"]
+    dockerfile = "containers/nginx/Dockerfile"
+    tags       = [
+        "ghcr.io/thegardenboys/banq-backend-web:latest"
+    ]
+    cache-from = [
+        "ghcr.io/thegardenboys/banq-backend-web:master-cache"
+    ]
+}
+
+group "production" {
+    targets = ["app", "web"]
+}
+
+## Development Build Specs
+variable "WWWUID" {
+    default = 1000
+}
+variable "WWWGID" {
+    default = 1000
 }
 
 target "app-development" {
@@ -35,18 +51,6 @@ target "app-development" {
     }
 }
 
-target "web" {
-    inherits   = ["base"]
-    dockerfile = "containers/nginx/Dockerfile"
-    tags       = [
-        "ghcr.io/thegardenboys/banq-backend-web:latest"
-    ]
-    cache-from = [
-        "ghcr.io/thegardenboys/banq-backend-web:master-cache"
-    ]
-    output = ["type=docker"]
-}
-
 target "web-development" {
     inherits = ["web"]
     tags     = [
@@ -54,6 +58,11 @@ target "web-development" {
     ]
 }
 
+group "development" {
+    targets = ["app-development", "web-development"]
+}
+
+## Testing Build Specs
 target "testing" {
     inherits = ["app-development"]
     target   = "testing"
@@ -62,14 +71,10 @@ target "testing" {
     ]
 }
 
-group "production" {
-    targets = ["app", "web"]
-}
-
-group "development" {
-    targets = ["app-development", "web-development"]
-}
-
 group "default" {
     targets = ["development"]
+}
+
+group "all" {
+    targets = ["production", "development", "testing"]
 }
