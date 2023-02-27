@@ -40,15 +40,17 @@ RUN install-php-extensions xdebug \
 
 FROM dev_common as development
 # install su-exec configure app logging
-RUN apk add --no-cache su-exec \
+RUN apk add --no-cache \
+        su-exec \
+        shadow \
     && echo "access.log = /dev/null" >> "/usr/local/etc/php-fpm.d/zz-docker.conf"
 # copy entrypoint
 COPY containers/php/entrypoint.sh /usr/local/sbin/entrypoint
 # setup user, group and chmod entrypoint
 ARG WWWUID
 ARG WWWGID
-RUN addgroup --gid "$WWWUID" banq \
-    && adduser --shell /bin/sh --ingroup banq --disabled-password --uid "$WWWUID" banq \
+RUN usermod -u "$WWWUID" www-data \
+    && groupmod -g "$WWWUID" www-data \
     && chmod u+x /usr/local/sbin/entrypoint
 ENTRYPOINT ["entrypoint"]
 
