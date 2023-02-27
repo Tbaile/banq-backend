@@ -13,7 +13,7 @@ services:
       POSTGRES_USER: testing
       POSTGRES_PASSWORD: testing
   testing:
-    image: ghcr.io/thegardenboys/banq-backend-app:testing
+    image: ${TESTING_IMAGE:-ghcr.io/thegardenboys/banq-backend-app:testing}
     depends_on:
       database:
         condition: service_healthy
