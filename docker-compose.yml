@@ -24,6 +24,7 @@ services:
                 condition: service_healthy
         volumes:
             - '.:/var/www/html'
+
     web:
         image: ghcr.io/thegardenboys/banq-backend-web:development
         healthcheck:
@@ -41,5 +42,23 @@ services:
             FPM_URL: app
             FPM_PORT: 9000
 
+    testing:
+        image: ${TESTING_IMAGE:-ghcr.io/thegardenboys/banq-backend-app:testing}
+        profiles:
+            - testing
+        depends_on:
+            database:
+                condition: service_healthy
+        secrets:
+            -   source: env_file
+                target: /var/www/html/.env
+        environment:
+            APP_ENV: testing
+            APP_KEY: base64:2bUUbbptoA/6QgCf/FihBkPS8LyE8spxS74YIEYu+UQ=
+
 volumes:
     database: { }
+
+secrets:
+    env_file:
+        file: .env

@@ -63,4 +63,4 @@ jobs:
 
       - name: Run testing processes
         run: |
-          TESTING_IMAGE="${{ steps.testing-tag.outputs.tags }}" docker compose -f docker-compose.testing.yml run --rm testing
+          TESTING_IMAGE="${{ steps.testing-tag.outputs.tags }}" docker compose run --rm testing
