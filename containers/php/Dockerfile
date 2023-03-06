@@ -24,7 +24,6 @@ COPY app ./app
 COPY bootstrap ./bootstrap
 COPY config ./config
 COPY database ./database
-COPY lang ./lang
 COPY public ./public
 COPY resources ./resources
 COPY routes ./routes
