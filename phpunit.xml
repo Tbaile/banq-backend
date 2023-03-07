@@ -6,16 +6,35 @@
 >
     <testsuites>
         <testsuite name="Unit">
-            <directory suffix="Test.php">./tests/Unit</directory>
+            <directory>./tests/Unit</directory>
         </testsuite>
         <testsuite name="Feature">
-            <directory suffix="Test.php">./tests/Feature</directory>
+            <directory>./tests/Feature</directory>
         </testsuite>
     </testsuites>
     <coverage>
         <include>
             <directory suffix=".php">./app</directory>
         </include>
+        <exclude>
+            <file>app/Http/Middleware/Authenticate.php</file>
+            <file>app/Http/Middleware/EncryptCookies.php</file>
+            <file>app/Http/Middleware/PreventRequestsDuringMaintenance.php</file>
+            <file>app/Http/Middleware/RedirectIfAuthenticated.php</file>
+            <file>app/Http/Middleware/TrimStrings.php</file>
+            <file>app/Http/Middleware/TrustHosts.php</file>
+            <file>app/Http/Middleware/TrustProxies.php</file>
+            <file>app/Http/Middleware/ValidateSignature.php</file>
+            <file>app/Http/Middleware/VerifyCsrfToken.php</file>
+            <file>app/Providers/AppServiceProvider.php</file>
+            <file>app/Providers/AuthServiceProvider.php</file>
+            <file>app/Providers/BroadcastServiceProvider.php</file>
+            <file>app/Providers/EventServiceProvider.php</file>
+            <file>app/Providers/RouteServiceProvider.php</file>
+        </exclude>
+        <report>
+            <cobertura outputFile="cobertura.xml"/>
+        </report>
     </coverage>
     <php>
         <env name="APP_ENV" value="testing"/>
