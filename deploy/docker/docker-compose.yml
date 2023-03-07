@@ -18,9 +18,7 @@ services:
         volumes:
             - bootstrap:/var/www/html/bootstrap
             - storage:/var/www/html/storage
-        secrets:
-            -   source: env_file
-                target: /var/www/html/.env
+        env_file: .env
         environment:
             ROLE: setup
     app:
@@ -31,9 +29,7 @@ services:
         volumes:
             - bootstrap:/var/www/html/bootstrap
             - storage:/var/www/html/storage
-        secrets:
-            -   source: env_file
-                target: /var/www/html/.env
+        env_file: .env
     web:
         image: ghcr.io/thegardenboys/banq-backend-web:latest
         depends_on:
@@ -50,7 +46,3 @@ volumes:
     bootstrap: { }
     storage: { }
     database: { }
-
-secrets:
-    env_file:
-        file: .env
