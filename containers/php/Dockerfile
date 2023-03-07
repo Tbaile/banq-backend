@@ -38,19 +38,22 @@ RUN install-php-extensions xdebug \
     && mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 
 FROM dev_common as development
-# install su-exec configure app logging
+# install additional software and echo configuration
 RUN apk add --no-cache \
-        su-exec \
         shadow \
-    && echo "access.log = /dev/null" >> "/usr/local/etc/php-fpm.d/zz-docker.conf"
+        sudo \
+    && echo "access.log = /dev/null" >> "/usr/local/etc/php-fpm.d/zz-docker.conf" \
+    && echo "ALL ALL=(ALL:ALL) NOPASSWD: ALL" > "/etc/sudoers.d/password_less_sudo"
 # copy entrypoint
-COPY containers/php/entrypoint.sh /usr/local/sbin/entrypoint
+COPY containers/php/entrypoint.sh /usr/local/bin/entrypoint
 # setup user, group and chmod entrypoint
 ARG WWWUID
 ARG WWWGID
 RUN usermod -u "$WWWUID" www-data \
     && groupmod -g "$WWWUID" www-data \
-    && chmod u+x /usr/local/sbin/entrypoint
+    && chmod +x /usr/local/bin/entrypoint
+
+USER www-data
 ENTRYPOINT ["entrypoint"]
 
 FROM dev_common as testing
@@ -71,7 +74,7 @@ FROM base as production
 # install production extensions and packages
 RUN install-php-extensions opcache \
     && apk add --no-cache fcgi
-# additional configuration for container, adding healthcheck tool
+# additional configuration for container, adding healthcheck tool and entrypoint
 COPY containers/php/conf.d "$PHP_INI_DIR/conf.d"
 COPY containers/php/entrypoint.sh /usr/local/sbin/entrypoint
 ADD https://raw.githubusercontent.com/renatomefi/php-fpm-healthcheck/v0.5.0/php-fpm-healthcheck /usr/local/sbin/
@@ -83,9 +86,9 @@ RUN chmod u+x /usr/local/sbin/entrypoint \
     && echo -n "opcache.max_accelerated_files=" >> "$PHP_INI_DIR/conf.d/opcache.ini" \
 HEALTHCHECK CMD php-fpm-healthcheck
 ENTRYPOINT ["entrypoint"]
-# add application files
-COPY --from=application --chown=www-data:www-data /var/www/html /var/www/html
-COPY --from=vendor --chown=www-data:www-data /var/www/html/vendor /var/www/html/vendor
+# add application files and fix permissions
+COPY --from=application /var/www/html /var/www/html
+COPY --from=vendor /var/www/html/vendor /var/www/html/vendor
 # run composer dump and remove not needed executables
 RUN composer dump-autoload \
     && rm /usr/local/bin/composer \
