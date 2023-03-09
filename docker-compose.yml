@@ -6,6 +6,8 @@ services:
             test: [ "CMD", "pg_isready", "-q", "-d", $DB_DATABASE, "-U", $DB_USERNAME ]
             interval: 1s
             start_period: 10s
+        ports:
+            - "5432"
         volumes:
             - database:/var/lib/postgresql/data
         environment:
