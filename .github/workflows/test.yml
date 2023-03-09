@@ -63,4 +63,5 @@ jobs:
 
       - name: Run testing processes
         run: |
+          cp .env.example .env
           TESTING_IMAGE="${{ steps.testing-tag.outputs.tags }}" docker compose run --rm testing
