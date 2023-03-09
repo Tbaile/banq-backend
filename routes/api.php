@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\User\LoginController;
 use App\Http\Controllers\User\RegisterController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,3 +16,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('register', RegisterController::class);
+Route::post('login', LoginController::class);
