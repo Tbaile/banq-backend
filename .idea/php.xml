@@ -125,6 +125,7 @@
       <path value="$PROJECT_DIR$/vendor/league/config" />
       <path value="$PROJECT_DIR$/vendor/league/commonmark" />
       <path value="$PROJECT_DIR$/vendor/_laravel_idea" />
+      <path value="$PROJECT_DIR$/vendor/tightenco/duster" />
     </include_path>
   </component>
   <component name="PhpInterpreters">
