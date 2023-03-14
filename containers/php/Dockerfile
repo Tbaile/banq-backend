@@ -52,7 +52,8 @@ ARG WWWGID
 RUN usermod -u "$WWWUID" www-data \
     && groupmod -g "$WWWUID" www-data \
     && chmod +x /usr/local/bin/entrypoint
-
+ENV XDEBUG_MODE=develop,debug,coverage
+ENV XDEBUG_CONFIG="client_host=host.docker.internal"
 USER www-data
 ENTRYPOINT ["entrypoint"]
 

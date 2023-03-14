@@ -24,6 +24,8 @@ services:
         depends_on:
             database:
                 condition: service_healthy
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
         volumes:
             - '.:/var/www/html'
 
