@@ -1,10 +1,9 @@
 {
     "extends": [
         "config:base",
-        ":automergeMinor"
-    ],
-    "schedule": [
-        "before 8:00am every sunday"
+        ":automergeMinor",
+        ":prHourlyLimitNone",
+        "schedule:weekends"
     ],
     "packageRules": [
         {
@@ -17,13 +16,7 @@
             "matchPackageNames": [
                 "postgres"
             ],
-            "allowedVersions": "<= 15.1"
-        },
-        {
-            "matchPackageNames": [
-                "laravel/framework"
-            ],
-            "allowedVersions": "<= 9"
+            "allowedVersions": "<= 15"
         }
     ]
 }
