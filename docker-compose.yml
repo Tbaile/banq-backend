@@ -14,29 +14,18 @@ services:
             POSTGRES_DB: $DB_DATABASE
             POSTGRES_USER: $DB_USERNAME
             POSTGRES_PASSWORD: $DB_PASSWORD
-
     app:
         image: ghcr.io/thegardenboys/banq-backend-app:development
         healthcheck:
-            test: [ "CMD-SHELL", "netstat", "-ltn", "|", "grep", "-c", "9000" ]
-            interval: 1s
-            start_period: 5s
-        depends_on:
-            database:
-                condition: service_healthy
+            test: [ "CMD", "php-fpm-healthcheck" ]
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         volumes:
             - '.:/var/www/html'
-
     web:
         image: ghcr.io/thegardenboys/banq-backend-web:development
         healthcheck:
-            interval: 1s
-            start_period: 5s
-        depends_on:
-            app:
-                condition: service_healthy
+            test: [ "CMD", "curl", "--fail", "--silent", "--output", "/dev/null", "http://localhost/status" ]
         volumes:
             - '.:/var/www/html'
         ports:

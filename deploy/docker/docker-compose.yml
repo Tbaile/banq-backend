@@ -2,6 +2,7 @@ name: banq-prod
 services:
     database:
         image: postgres:15.1-alpine
+        restart: unless-stopped
         healthcheck:
             test: [ "CMD", "pg_isready", "-q", "-d", $DB_DATABASE, "-U", $DB_USERNAME ]
         volumes:
@@ -12,29 +13,28 @@ services:
             POSTGRES_PASSWORD: $DB_PASSWORD
     setup:
         image: ghcr.io/thegardenboys/banq-backend-app:latest
-        depends_on:
-            database:
-                condition: service_healthy
         volumes:
             - bootstrap:/var/www/html/bootstrap
             - storage:/var/www/html/storage
         env_file: .env
-        environment:
-            ROLE: setup
+        command: [ "setup" ]
     app:
         image: ghcr.io/thegardenboys/banq-backend-app:latest
+        restart: unless-stopped
         depends_on:
             setup:
                 condition: service_completed_successfully
+        healthcheck:
+            test: [ "CMD", "php-fpm-healthcheck" ]
         volumes:
             - bootstrap:/var/www/html/bootstrap
             - storage:/var/www/html/storage
         env_file: .env
     web:
         image: ghcr.io/thegardenboys/banq-backend-web:latest
-        depends_on:
-            app:
-                condition: service_started
+        restart: unless-stopped
+        healthcheck:
+            test: [ "CMD", "curl", "--fail", "--silent", "--output", "/dev/null", "http://localhost/status" ]
         ports:
             - "80"
         environment:

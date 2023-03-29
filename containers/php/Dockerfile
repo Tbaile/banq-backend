@@ -40,22 +40,29 @@ RUN install-php-extensions xdebug \
 FROM dev_common as development
 # install additional software and echo configuration
 RUN apk add --no-cache \
+        fcgi \
+        netcat-openbsd \
         shadow \
         sudo \
     && echo "access.log = /dev/null" >> "/usr/local/etc/php-fpm.d/zz-docker.conf" \
     && echo "ALL ALL=(ALL:ALL) NOPASSWD: ALL" > "/etc/sudoers.d/password_less_sudo"
 # copy entrypoint
+ADD https://raw.githubusercontent.com/renatomefi/php-fpm-healthcheck/v0.5.0/php-fpm-healthcheck /usr/local/bin/php-fpm-healthcheck
+ADD https://github.com/eficode/wait-for/releases/download/v2.2.4/wait-for /usr/local/bin/wait-for
 COPY containers/php/entrypoint.sh /usr/local/bin/entrypoint
 # setup user, group and chmod entrypoint
 ARG WWWUID
 ARG WWWGID
 RUN usermod -u "$WWWUID" www-data \
     && groupmod -g "$WWWUID" www-data \
-    && chmod +x /usr/local/bin/entrypoint
+    && chmod +x /usr/local/bin/entrypoint \
+    && chmod +x /usr/local/bin/php-fpm-healthcheck \
+    && chmod +x /usr/local/bin/wait-for
 ENV XDEBUG_MODE=develop,debug,coverage
 ENV XDEBUG_CONFIG="client_host=host.docker.internal"
 USER www-data
 ENTRYPOINT ["entrypoint"]
+CMD ["php-fpm"]
 
 FROM dev_common as testing
 # copy application and testing files
@@ -74,19 +81,23 @@ CMD ["php", "artisan", "test", "--coverage-cobertura", "coverage.cobertura.xml"]
 FROM base as production
 # install production extensions and packages
 RUN install-php-extensions opcache \
-    && apk add --no-cache fcgi
+    && apk add --no-cache \
+        fcgi \
+        netcat-openbsd
+ADD https://raw.githubusercontent.com/renatomefi/php-fpm-healthcheck/v0.5.0/php-fpm-healthcheck /usr/local/sbin/php-fpm-healthcheck
+ADD https://github.com/eficode/wait-for/releases/download/v2.2.4/wait-for /usr/local/bin/wait-for
 # additional configuration for container, adding healthcheck tool and entrypoint
 COPY containers/php/conf.d "$PHP_INI_DIR/conf.d"
 COPY containers/php/entrypoint.sh /usr/local/sbin/entrypoint
-ADD https://raw.githubusercontent.com/renatomefi/php-fpm-healthcheck/v0.5.0/php-fpm-healthcheck /usr/local/sbin/
 RUN chmod u+x /usr/local/sbin/entrypoint \
     && chmod u+x /usr/local/sbin/php-fpm-healthcheck \
+    && chmod +x /usr/local/bin/wait-for \
     && mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" \
     && echo "access.log = /dev/null" >> "/usr/local/etc/php-fpm.d/zz-docker.conf" \
     && echo "pm.status_path = /status" >> "/usr/local/etc/php-fpm.d/zz-docker.conf" \
-    && echo -n "opcache.max_accelerated_files=" >> "$PHP_INI_DIR/conf.d/opcache.ini" \
-HEALTHCHECK CMD php-fpm-healthcheck
+    && echo -n "opcache.max_accelerated_files=" >> "$PHP_INI_DIR/conf.d/opcache.ini"
 ENTRYPOINT ["entrypoint"]
+CMD ["php-fpm"]
 # add application files and fix permissions
 COPY --from=application /var/www/html /var/www/html
 COPY --from=vendor /var/www/html/vendor /var/www/html/vendor
