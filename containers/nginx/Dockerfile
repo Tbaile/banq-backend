@@ -1,4 +1,4 @@
-FROM nginx:1.23.3-alpine as production
+FROM nginx:1.23.4-alpine as production
 WORKDIR /var/www/html
 COPY containers/nginx/config /etc/nginx
 COPY public ./public
