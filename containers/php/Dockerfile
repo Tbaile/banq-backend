@@ -44,7 +44,7 @@ RUN apk add --no-cache \
         netcat-openbsd \
         shadow \
         sudo \
-    && echo "access.log = /dev/null" >> "/usr/local/etc/php-fpm.d/zz-docker.conf" \
+    && echo "pm.status_path = /status" >> "/usr/local/etc/php-fpm.d/zz-docker.conf" \
     && echo "ALL ALL=(ALL:ALL) NOPASSWD: ALL" > "/etc/sudoers.d/password_less_sudo"
 # copy entrypoint
 ADD https://raw.githubusercontent.com/renatomefi/php-fpm-healthcheck/v0.5.0/php-fpm-healthcheck /usr/local/bin/php-fpm-healthcheck
@@ -55,9 +55,9 @@ ARG WWWUID
 ARG WWWGID
 RUN usermod -u "$WWWUID" www-data \
     && groupmod -g "$WWWUID" www-data \
-    && chmod +x /usr/local/bin/entrypoint \
-    && chmod +x /usr/local/bin/php-fpm-healthcheck \
-    && chmod +x /usr/local/bin/wait-for
+    && chmod 777 /usr/local/bin/entrypoint \
+    && chmod 777 /usr/local/bin/php-fpm-healthcheck \
+    && chmod 777 /usr/local/bin/wait-for
 ENV XDEBUG_MODE=develop,debug,coverage
 ENV XDEBUG_CONFIG="client_host=host.docker.internal"
 USER www-data
@@ -89,9 +89,9 @@ ADD https://github.com/eficode/wait-for/releases/download/v2.2.4/wait-for /usr/l
 # additional configuration for container, adding healthcheck tool and entrypoint
 COPY containers/php/conf.d "$PHP_INI_DIR/conf.d"
 COPY containers/php/entrypoint.sh /usr/local/sbin/entrypoint
-RUN chmod u+x /usr/local/sbin/entrypoint \
-    && chmod u+x /usr/local/sbin/php-fpm-healthcheck \
-    && chmod +x /usr/local/bin/wait-for \
+RUN chmod 700 /usr/local/sbin/entrypoint \
+    && chmod 700 /usr/local/sbin/php-fpm-healthcheck \
+    && chmod 777 /usr/local/bin/wait-for \
     && mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" \
     && echo "access.log = /dev/null" >> "/usr/local/etc/php-fpm.d/zz-docker.conf" \
     && echo "pm.status_path = /status" >> "/usr/local/etc/php-fpm.d/zz-docker.conf" \
