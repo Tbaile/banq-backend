@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Enum\CurrencyEnum;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,6 +21,7 @@ class AssetFactory extends Factory
         return [
             'name' => $this->faker->name(),
             'currency' => $this->faker->randomElement(CurrencyEnum::cases()),
+            'user_id' => User::factory(),
         ];
     }
 }
