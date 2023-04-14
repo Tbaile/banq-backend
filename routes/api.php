@@ -20,5 +20,6 @@ Route::post('register', RegisterController::class);
 Route::post('login', LoginController::class);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::apiResource('asset', AssetController::class);
+    Route::apiResource('asset', AssetController::class)
+        ->only('store');
 });
