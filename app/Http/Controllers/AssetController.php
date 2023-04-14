@@ -12,7 +12,7 @@ class AssetController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(Asset::class, 'asset');
+        $this->authorizeResource(Asset::class);
     }
 
     /**
