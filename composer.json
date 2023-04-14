@@ -16,7 +16,7 @@
         "laravel/pint": "1.8.0",
         "mockery/mockery": "1.5.1",
         "nunomaduro/collision": "v7.4.0",
-        "pestphp/pest": "v2.4.0",
+        "pestphp/pest": "v2.5.0",
         "pestphp/pest-plugin-laravel": "v2.0.0",
         "spatie/laravel-ignition": "2.0.0",
         "tightenco/duster": "v1.2.0"
