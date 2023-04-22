@@ -105,7 +105,7 @@ jobs:
           password: ${{ github.token }}
 
       - name: Build and Push Images
-        uses: docker/bake-action@v2.3.0
+        uses: docker/bake-action@v3.0.1
         with:
           targets: production
           files: |
