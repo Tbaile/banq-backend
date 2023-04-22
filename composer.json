@@ -19,7 +19,7 @@
         "pestphp/pest": "v2.5.2",
         "pestphp/pest-plugin-laravel": "v2.0.0",
         "spatie/laravel-ignition": "2.1.0",
-        "tightenco/duster": "v1.2.0"
+        "tightenco/duster": "v1.2.1"
     },
     "autoload": {
         "psr-4": {
