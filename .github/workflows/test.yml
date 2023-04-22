@@ -52,7 +52,7 @@ jobs:
           password: ${{ github.token }}
 
       - name: Build testing target
-        uses: docker/bake-action@v2.3.0
+        uses: docker/bake-action@v3.0.1
         with:
           files: |
             ./docker-bake.hcl
