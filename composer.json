@@ -18,7 +18,7 @@
         "nunomaduro/collision": "v7.5.0",
         "pestphp/pest": "v2.5.2",
         "pestphp/pest-plugin-laravel": "v2.0.0",
-        "spatie/laravel-ignition": "2.1.0",
+        "spatie/laravel-ignition": "2.1.1",
         "tightenco/duster": "v2.0.0"
     },
     "autoload": {
