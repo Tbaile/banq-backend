@@ -1,4 +1,4 @@
-FROM php:8.2.5-fpm-alpine as base
+FROM php:8.2.6-fpm-alpine as base
 WORKDIR /var/www/html
 # install required extensions and composer
 COPY --from=mlocati/php-extension-installer:2.1.22 /usr/bin/install-php-extensions /usr/local/sbin/
