@@ -36,7 +36,7 @@ services:
         volumes:
             - '.:/var/www/html'
         ports:
-            - "80"
+            - "80:80"
         environment:
             APP_DOMAIN: localhost
             FPM_URL: app
