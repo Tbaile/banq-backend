@@ -14,6 +14,13 @@ services:
             POSTGRES_DB: $DB_DATABASE
             POSTGRES_USER: $DB_USERNAME
             POSTGRES_PASSWORD: $DB_PASSWORD
+    pgadmin:
+        image: dpage/pgadmin4:6.21
+        environment:
+            PGADMIN_DEFAULT_EMAIL: admin@banq.com
+            PGADMIN_DEFAULT_PASSWORD: password
+        ports:
+            - "80"
     app:
         image: banq-backend-app:latest
         healthcheck:
