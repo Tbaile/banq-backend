@@ -15,7 +15,7 @@ services:
             POSTGRES_USER: $DB_USERNAME
             POSTGRES_PASSWORD: $DB_PASSWORD
     app:
-        image: ghcr.io/thegardenboys/banq-backend-app:development
+        image: banq-backend-app:latest
         healthcheck:
             test: [ "CMD", "php-fpm-healthcheck" ]
         extra_hosts:
@@ -23,7 +23,7 @@ services:
         volumes:
             - '.:/var/www/html'
     web:
-        image: ghcr.io/thegardenboys/banq-backend-web:development
+        image: banq-backend-web:latest
         healthcheck:
             test: [ "CMD", "curl", "--fail", "--silent", "--output", "/dev/null", "http://localhost/status" ]
         volumes:
@@ -36,7 +36,7 @@ services:
             FPM_PORT: 9000
 
     testing:
-        image: ${TESTING_IMAGE:-ghcr.io/thegardenboys/banq-backend-app:testing}
+        image: ${TESTING_IMAGE:-banq-backend-app:testing}
         profiles:
             - testing
         depends_on:

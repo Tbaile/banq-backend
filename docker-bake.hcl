@@ -43,7 +43,7 @@ target "app-development" {
     inherits = ["app"]
     target   = "development"
     tags     = [
-        "ghcr.io/thegardenboys/banq-backend-app:development"
+        "banq-backend-app:latest"
     ]
     args = {
         WWWUID = WWWUID
@@ -54,7 +54,7 @@ target "app-development" {
 target "web-development" {
     inherits = ["web"]
     tags     = [
-        "ghcr.io/thegardenboys/banq-backend-web:development"
+        "banq-backend-web:latest"
     ]
 }
 
@@ -67,7 +67,7 @@ target "testing" {
     inherits = ["app-development"]
     target   = "testing"
     tags     = [
-        "ghcr.io/thegardenboys/banq-backend-app:testing"
+        "banq-backend-app:testing"
     ]
 }
 
