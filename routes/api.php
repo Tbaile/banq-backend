@@ -3,6 +3,7 @@
 use App\Http\Controllers\AssetController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\User\LoginController;
+use App\Http\Controllers\User\MeController;
 use App\Http\Controllers\User\RegisterController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,4 +26,6 @@ Route::middleware('auth:sanctum')->group(function () {
         ->only('store');
     Route::apiResource('transaction', TransactionController::class)
         ->only(['store']);
+    Route::get('/user/me', MeController::class)
+        ->name('user.me');
 });
