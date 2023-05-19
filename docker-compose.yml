@@ -15,7 +15,7 @@ services:
             POSTGRES_USER: $DB_USERNAME
             POSTGRES_PASSWORD: $DB_PASSWORD
     pgadmin:
-        image: dpage/pgadmin4:6.21
+        image: dpage/pgadmin4:7.1
         environment:
             PGADMIN_DEFAULT_EMAIL: admin@banq.com
             PGADMIN_DEFAULT_PASSWORD: password
