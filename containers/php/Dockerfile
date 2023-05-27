@@ -3,7 +3,7 @@ WORKDIR /var/www/html
 # install required extensions and composer
 COPY --from=mlocati/php-extension-installer:2.1.24 /usr/bin/install-php-extensions /usr/local/sbin/
 RUN install-php-extensions pdo_pgsql
-COPY --from=composer:2.5.5 /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:2.5.7 /usr/bin/composer /usr/local/bin/composer
 # avoids issue with composer runs as root
 ARG COMPOSER_ALLOW_SUPERUSER=1
 
