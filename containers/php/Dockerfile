@@ -93,6 +93,7 @@ RUN chmod 700 /usr/local/sbin/entrypoint \
     && chmod 700 /usr/local/sbin/php-fpm-healthcheck \
     && chmod 777 /usr/local/bin/wait-for \
     && mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" \
+    && echo "expose_php = off" >> "$PHP_INI_DIR/php.ini" \
     && echo "access.log = /dev/null" >> "/usr/local/etc/php-fpm.d/zz-docker.conf" \
     && echo "pm.status_path = /status" >> "/usr/local/etc/php-fpm.d/zz-docker.conf" \
     && echo -n "opcache.max_accelerated_files=" >> "$PHP_INI_DIR/conf.d/opcache.ini"
