@@ -14,7 +14,7 @@
     "require-dev": {
         "fakerphp/faker": "1.22.0",
         "laravel/pint": "1.10.0",
-        "laravel/telescope": "v4.14.3",
+        "laravel/telescope": "v4.14.4",
         "mockery/mockery": "1.5.1",
         "nunomaduro/collision": "v7.5.2",
         "pestphp/pest": "v2.6.1",
