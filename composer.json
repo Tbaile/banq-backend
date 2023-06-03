@@ -17,7 +17,7 @@
         "laravel/telescope": "v4.14.5",
         "mockery/mockery": "1.5.1",
         "nunomaduro/collision": "v7.5.2",
-        "pestphp/pest": "v2.6.1",
+        "pestphp/pest": "v2.6.2",
         "pestphp/pest-plugin-laravel": "v2.0.0",
         "spatie/laravel-ignition": "2.1.3",
         "tightenco/duster": "v2.0.1"
