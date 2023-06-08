@@ -11,12 +11,14 @@ FROM base as vendor
 # copy composer.json and check if we got platform reqs correctly
 COPY composer.json .
 COPY composer.lock .
-RUN composer check-platform-reqs \
+RUN --mount=type=cache,target=/root/.composer \
+    composer check-platform-reqs \
     && composer i --no-scripts --no-dev
 
 FROM vendor as vendor_dev
 # cheat time by reusing previous layer and installing only dev dependencies
-RUN composer i --no-scripts
+RUN --mount=type=cache,target=/root/.composer \
+    composer i --no-scripts
 
 FROM base as application
 # copy application
