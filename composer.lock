@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b78a3c1eb2eed0053ab437966e28b6cf",
+    "content-hash": "2e2ab10dbb9a916dbeef168ba1bc28f2",
     "packages": [
         {
             "name": "brick/math",
@@ -8706,16 +8706,16 @@
         },
         {
             "name": "tightenco/duster",
-            "version": "v2.0.1",
+            "version": "v2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tighten/duster.git",
-                "reference": "7162b19e5b2e224f3528714134081bbfe767fb72"
+                "reference": "bfc0bc0c69956b9381d9ed8d3eff01b6ec3e8a37"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tighten/duster/zipball/7162b19e5b2e224f3528714134081bbfe767fb72",
-                "reference": "7162b19e5b2e224f3528714134081bbfe767fb72",
+                "url": "https://api.github.com/repos/tighten/duster/zipball/bfc0bc0c69956b9381d9ed8d3eff01b6ec3e8a37",
+                "reference": "bfc0bc0c69956b9381d9ed8d3eff01b6ec3e8a37",
                 "shasum": ""
             },
             "require": {
@@ -8728,7 +8728,7 @@
                 "nunomaduro/termwind": "^1.15.1",
                 "spatie/invade": "^1.1",
                 "squizlabs/php_codesniffer": "^3.7",
-                "tightenco/tlint": "^8.0"
+                "tightenco/tlint": "^9.0"
             },
             "bin": [
                 "builds/duster"
@@ -8772,7 +8772,7 @@
                 "issues": "https://github.com/tighten/duster/issues",
                 "source": "https://github.com/tighten/duster"
             },
-            "time": "2023-05-12T20:59:21+00:00"
+            "time": "2023-07-13T20:41:25+00:00"
         }
     ],
     "aliases": [],
