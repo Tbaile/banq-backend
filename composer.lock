@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "24398c10b9b86d191c035d57c6126693",
+    "content-hash": "556c53141a65baf8985e28977dc9b194",
     "packages": [
         {
             "name": "brick/math",
@@ -8716,16 +8716,16 @@
         },
         {
             "name": "tightenco/duster",
-            "version": "v2.1.1",
+            "version": "v2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tighten/duster.git",
-                "reference": "bfc0bc0c69956b9381d9ed8d3eff01b6ec3e8a37"
+                "reference": "39287961c750f726785e2d027ea090be121c7223"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tighten/duster/zipball/bfc0bc0c69956b9381d9ed8d3eff01b6ec3e8a37",
-                "reference": "bfc0bc0c69956b9381d9ed8d3eff01b6ec3e8a37",
+                "url": "https://api.github.com/repos/tighten/duster/zipball/39287961c750f726785e2d027ea090be121c7223",
+                "reference": "39287961c750f726785e2d027ea090be121c7223",
                 "shasum": ""
             },
             "require": {
@@ -8782,7 +8782,7 @@
                 "issues": "https://github.com/tighten/duster/issues",
                 "source": "https://github.com/tighten/duster"
             },
-            "time": "2023-07-13T20:41:25+00:00"
+            "time": "2023-07-20T21:28:34+00:00"
         }
     ],
     "aliases": [],
