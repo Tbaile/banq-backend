@@ -1,5 +1,5 @@
 {
-    "name": "thegardenboys/banq-server",
+    "name": "thegardenboys/banq-backend",
     "type": "project",
     "description": "BanQ Server.",
     "keywords": ["framework", "laravel", "banq", "thegardenboys"],
