@@ -8,34 +8,18 @@ target "base" {
 target "app" {
     inherits   = ["base"]
     dockerfile = "containers/php/Dockerfile"
-    tags       = [
-        "ghcr.io/thegardenboys/banq-backend-app:latest"
-    ]
-    cache-from = [
-        "ghcr.io/thegardenboys/banq-backend-app:master-cache"
-    ]
 }
 
 target "web" {
     inherits   = ["base"]
     dockerfile = "containers/nginx/Dockerfile"
-    tags       = [
-        "ghcr.io/thegardenboys/banq-backend-web:latest"
-    ]
-    cache-from = [
-        "ghcr.io/thegardenboys/banq-backend-web:master-cache"
-    ]
-}
-
-group "production" {
-    targets = ["app", "web"]
 }
 
 ## Development Build Specs
-variable "WWWUID" {
+variable "UID" {
     default = 1000
 }
-variable "WWWGID" {
+variable "GID" {
     default = 1000
 }
 
@@ -43,18 +27,18 @@ target "app-development" {
     inherits = ["app"]
     target   = "development"
     tags     = [
-        "banq-backend-app:latest"
+        "banq-development-app"
     ]
     args = {
-        WWWUID = WWWUID
-        WWWGID = WWWGID
+        UID = UID
+        GID = GID
     }
 }
 
 target "web-development" {
     inherits = ["web"]
     tags     = [
-        "banq-backend-web:latest"
+        "banq-development-web"
     ]
 }
 
@@ -67,14 +51,35 @@ target "testing" {
     inherits = ["app-development"]
     target   = "testing"
     tags     = [
-        "banq-backend-app:testing"
+        "banq-testing"
     ]
+}
+
+## Production Build Specs
+target "app-production" {
+    inherits = ["app"]
+    target   = "production"
+    tags     = [
+        "banq-app"
+    ]
+}
+
+target "web-production" {
+    inherits = ["web"]
+    target   = "production"
+    tags     = [
+        "banq-web"
+    ]
+}
+
+group "production" {
+    targets = ["app-production", "web-production"]
+}
+
+group "all" {
+    targets = ["development", "testing", "production"]
 }
 
 group "default" {
     targets = ["development"]
-}
-
-group "all" {
-    targets = ["production", "development", "testing"]
 }

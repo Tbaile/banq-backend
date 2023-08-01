@@ -1,4 +1,4 @@
-name: Build
+name: Builds
 
 on:
   schedule:
@@ -11,8 +11,8 @@ permissions:
   packages: write
 
 jobs:
-  build:
-    name: Build Images
+  images:
+    name: Build production images
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout repository

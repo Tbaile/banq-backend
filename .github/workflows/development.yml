@@ -1,4 +1,4 @@
-name: Development
+name: CI
 on:
   push:
     branches-ignore:
@@ -8,9 +8,11 @@ on:
   workflow_dispatch:
 
 jobs:
-  test-app:
-    uses: ./.github/workflows/test.yml
-  build-images:
-    uses: ./.github/workflows/build.yml
+  tests:
+    name: Tests
+    uses: ./.github/workflows/tests.yml
+  build:
+    name: Builds
+    uses: ./.github/workflows/builds.yml
     needs:
-      - test-app
+      - tests

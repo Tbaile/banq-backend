@@ -46,17 +46,20 @@ RUN apk add --no-cache \
         netcat-openbsd \
         shadow \
         sudo \
+        bash \
+        git \
     && echo "pm.status_path = /status" >> "/usr/local/etc/php-fpm.d/zz-docker.conf" \
+    && echo "access.log = /dev/null" >> "/usr/local/etc/php-fpm.d/zz-docker.conf" \
     && echo "ALL ALL=(ALL:ALL) NOPASSWD: ALL" > "/etc/sudoers.d/password_less_sudo"
 # copy entrypoint
 ADD https://raw.githubusercontent.com/renatomefi/php-fpm-healthcheck/v0.5.0/php-fpm-healthcheck /usr/local/bin/php-fpm-healthcheck
 ADD https://github.com/eficode/wait-for/releases/download/v2.2.4/wait-for /usr/local/bin/wait-for
-COPY containers/php/entrypoint.sh /usr/local/bin/entrypoint
+COPY --link containers/php/entrypoint.sh /usr/local/bin/entrypoint
 # setup user, group and chmod entrypoint
-ARG WWWUID
-ARG WWWGID
-RUN usermod -u "$WWWUID" www-data \
-    && groupmod -g "$WWWUID" www-data \
+ARG UID
+ARG GID
+RUN usermod -u "$UID" www-data \
+    && groupmod -g "$GID" www-data \
     && chmod 777 /usr/local/bin/entrypoint \
     && chmod 777 /usr/local/bin/php-fpm-healthcheck \
     && chmod 777 /usr/local/bin/wait-for
@@ -89,8 +92,8 @@ RUN install-php-extensions opcache \
 ADD https://raw.githubusercontent.com/renatomefi/php-fpm-healthcheck/v0.5.0/php-fpm-healthcheck /usr/local/sbin/php-fpm-healthcheck
 ADD https://github.com/eficode/wait-for/releases/download/v2.2.4/wait-for /usr/local/bin/wait-for
 # additional configuration for container, adding healthcheck tool and entrypoint
-COPY containers/php/conf.d "$PHP_INI_DIR/conf.d"
-COPY containers/php/entrypoint.sh /usr/local/sbin/entrypoint
+COPY --link containers/php/conf.d "$PHP_INI_DIR/conf.d"
+COPY --link containers/php/entrypoint.sh /usr/local/sbin/entrypoint
 RUN chmod 700 /usr/local/sbin/entrypoint \
     && chmod 700 /usr/local/sbin/php-fpm-healthcheck \
     && chmod 777 /usr/local/bin/wait-for \
@@ -101,7 +104,7 @@ RUN chmod 700 /usr/local/sbin/entrypoint \
     && echo -n "opcache.max_accelerated_files=" >> "$PHP_INI_DIR/conf.d/opcache.ini"
 ENTRYPOINT ["entrypoint"]
 CMD ["php-fpm"]
-# add application files and fix permissions
+# add application files
 COPY --from=application /var/www/html /var/www/html
 COPY --from=vendor /var/www/html/vendor /var/www/html/vendor
 # run composer dump and remove not needed executables
@@ -112,4 +115,3 @@ RUN composer dump-autoload \
 RUN echo $(find . -name "*.php" | wc -l | awk '{print (int($1/1000)+2)*1000}') >> "$PHP_INI_DIR/conf.d/opcache.ini"
 # add volumes needed to be shared thoughout the app containers
 VOLUME ["/var/www/html/bootstrap", "/var/www/html/storage"]
-

@@ -16,33 +16,45 @@ services:
             POSTGRES_PASSWORD: $DB_PASSWORD
     pgadmin:
         image: dpage/pgadmin4:7.5
+        profiles:
+            - pgadmin
         ports:
             - "8080:80"
         environment:
             PGADMIN_DEFAULT_EMAIL: admin@banq.com
             PGADMIN_DEFAULT_PASSWORD: password
-    app:
-        image: banq-backend-app:latest
+    dev:
+        image: banq-development-app
+        pull_policy: never
+        depends_on:
+            init:
+                condition: service_completed_successfully
         healthcheck:
             test: [ "CMD", "php-fpm-healthcheck" ]
         extra_hosts:
             - 'host.docker.internal:host-gateway'
-        volumes:
+        volumes: &volumes
             - '.:/var/www/html'
+    init:
+        image: banq-development-app
+        pull_policy: never
+        volumes: *volumes
+        command: /bin/sh -c "composer install && php artisan migrate"
     web:
-        image: banq-backend-web:latest
+        image: banq-development-web
+        pull_policy: never
         healthcheck:
             test: [ "CMD", "curl", "--fail", "--silent", "--output", "/dev/null", "http://localhost/status" ]
-        volumes:
-            - '.:/var/www/html'
+        volumes: *volumes
         ports:
             - "80:80"
         environment:
-            FPM_URL: app
+            FPM_URL: dev
             FPM_PORT: 9000
 
     testing:
-        image: ${TESTING_IMAGE:-banq-backend-app:testing}
+        image: banq-testing
+        pull_policy: never
         profiles:
             - testing
         depends_on:
