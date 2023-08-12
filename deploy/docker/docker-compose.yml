@@ -1,7 +1,7 @@
 name: banq-prod
 services:
     database:
-        image: postgres:15.3-alpine
+        image: postgres:15.4-alpine
         restart: unless-stopped
         healthcheck:
             test: [ "CMD", "pg_isready", "-q", "-d", $DB_DATABASE, "-U", $DB_USERNAME ]
