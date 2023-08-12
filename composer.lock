@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "acaabd83f360ccfe3901c207b7d7904e",
+    "content-hash": "65acafa80a3f32e4299fbf183019c380",
     "packages": [
         {
             "name": "brick/math",
@@ -5563,16 +5563,16 @@
     "packages-dev": [
         {
             "name": "brianium/paratest",
-            "version": "v7.2.4",
+            "version": "v7.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paratestphp/paratest.git",
-                "reference": "a310a310973226f5c25de806987bfc11aa99ab91"
+                "reference": "4d7ad5b6564f63baa1b948ecad05439f22880942"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paratestphp/paratest/zipball/a310a310973226f5c25de806987bfc11aa99ab91",
-                "reference": "a310a310973226f5c25de806987bfc11aa99ab91",
+                "url": "https://api.github.com/repos/paratestphp/paratest/zipball/4d7ad5b6564f63baa1b948ecad05439f22880942",
+                "reference": "4d7ad5b6564f63baa1b948ecad05439f22880942",
                 "shasum": ""
             },
             "require": {
@@ -5642,7 +5642,7 @@
             ],
             "support": {
                 "issues": "https://github.com/paratestphp/paratest/issues",
-                "source": "https://github.com/paratestphp/paratest/tree/v7.2.4"
+                "source": "https://github.com/paratestphp/paratest/tree/v7.2.5"
             },
             "funding": [
                 {
@@ -5654,7 +5654,7 @@
                     "type": "paypal"
                 }
             ],
-            "time": "2023-08-04T09:22:30+00:00"
+            "time": "2023-08-08T13:23:59+00:00"
         },
         {
             "name": "doctrine/deprecations",
@@ -6389,21 +6389,21 @@
         },
         {
             "name": "pestphp/pest",
-            "version": "v2.12.1",
+            "version": "v2.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pestphp/pest.git",
-                "reference": "3742e74adf08415cef3912c10304e9184c1ee90d"
+                "reference": "47f2ae32c14cd3f15520f5a12a3c36fdec25a2ee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pestphp/pest/zipball/3742e74adf08415cef3912c10304e9184c1ee90d",
-                "reference": "3742e74adf08415cef3912c10304e9184c1ee90d",
+                "url": "https://api.github.com/repos/pestphp/pest/zipball/47f2ae32c14cd3f15520f5a12a3c36fdec25a2ee",
+                "reference": "47f2ae32c14cd3f15520f5a12a3c36fdec25a2ee",
                 "shasum": ""
             },
             "require": {
-                "brianium/paratest": "^7.2.4",
-                "nunomaduro/collision": "^7.8.0",
+                "brianium/paratest": "^7.2.5",
+                "nunomaduro/collision": "^7.8.1",
                 "nunomaduro/termwind": "^1.15.1",
                 "pestphp/pest-plugin": "^2.0.1",
                 "pestphp/pest-plugin-arch": "^2.2.3",
@@ -6475,7 +6475,7 @@
             ],
             "support": {
                 "issues": "https://github.com/pestphp/pest/issues",
-                "source": "https://github.com/pestphp/pest/tree/v2.12.1"
+                "source": "https://github.com/pestphp/pest/tree/v2.13.0"
             },
             "funding": [
                 {
@@ -6487,7 +6487,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-08-04T10:23:55+00:00"
+            "time": "2023-08-09T11:14:39+00:00"
         },
         {
             "name": "pestphp/pest-plugin",
@@ -6914,16 +6914,16 @@
         },
         {
             "name": "phpdocumentor/type-resolver",
-            "version": "1.7.2",
+            "version": "1.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/TypeResolver.git",
-                "reference": "b2fe4d22a5426f38e014855322200b97b5362c0d"
+                "reference": "3219c6ee25c9ea71e3d9bbaf39c67c9ebd499419"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/b2fe4d22a5426f38e014855322200b97b5362c0d",
-                "reference": "b2fe4d22a5426f38e014855322200b97b5362c0d",
+                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/3219c6ee25c9ea71e3d9bbaf39c67c9ebd499419",
+                "reference": "3219c6ee25c9ea71e3d9bbaf39c67c9ebd499419",
                 "shasum": ""
             },
             "require": {
@@ -6966,9 +6966,9 @@
             "description": "A PSR-5 based resolver of Class names, Types and Structural Element Names",
             "support": {
                 "issues": "https://github.com/phpDocumentor/TypeResolver/issues",
-                "source": "https://github.com/phpDocumentor/TypeResolver/tree/1.7.2"
+                "source": "https://github.com/phpDocumentor/TypeResolver/tree/1.7.3"
             },
-            "time": "2023-05-30T18:13:47+00:00"
+            "time": "2023-08-12T11:01:26+00:00"
         },
         {
             "name": "phpstan/phpdoc-parser",
