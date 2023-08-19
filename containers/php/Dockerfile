@@ -1,7 +1,7 @@
 FROM php:8.2.7-fpm-alpine as base
 WORKDIR /var/www/html
 # install required extensions and composer
-COPY --from=mlocati/php-extension-installer:2.1.40 /usr/bin/install-php-extensions /usr/local/sbin/
+COPY --from=mlocati/php-extension-installer:2.1.42 /usr/bin/install-php-extensions /usr/local/sbin/
 RUN install-php-extensions pdo_pgsql
 COPY --from=composer:2.5.8 /usr/bin/composer /usr/local/bin/composer
 # avoids issue with composer runs as root
