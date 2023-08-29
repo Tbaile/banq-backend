@@ -35,7 +35,8 @@ services:
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         volumes: &volumes
-            - '.:/var/www/html'
+            - .:/var/www/html
+            - home:/home/www-data
     init:
         image: banq-development-app
         pull_policy: never
@@ -70,6 +71,7 @@ services:
 
 volumes:
     database: { }
+    home: { }
 
 secrets:
     env_file:
