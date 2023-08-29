@@ -42,12 +42,13 @@ RUN install-php-extensions xdebug \
 FROM dev_common as development
 # install additional software and echo configuration
 RUN apk add --no-cache \
+        bash \
         fcgi \
+        git \
         netcat-openbsd \
+        postgresql15-client \
         shadow \
         sudo \
-        bash \
-        git \
     && echo "pm.status_path = /status" >> "/usr/local/etc/php-fpm.d/zz-docker.conf" \
     && echo "access.log = /dev/null" >> "/usr/local/etc/php-fpm.d/zz-docker.conf" \
     && echo "ALL ALL=(ALL:ALL) NOPASSWD: ALL" > "/etc/sudoers.d/password_less_sudo"
