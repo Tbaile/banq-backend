@@ -3,8 +3,11 @@
         "config:base",
         ":automergeMinor",
         ":prHourlyLimitNone",
+        ":disableDependencyDashboard",
         "schedule:weekends"
     ],
+    "rangeStrategy": "replace",
+    "automergeType": "branch",
     "packageRules": [
         {
             "matchPackageNames": [
