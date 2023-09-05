@@ -2,7 +2,13 @@
     "name": "thegardenboys/banq-backend",
     "type": "project",
     "description": "BanQ Server.",
-    "keywords": ["framework", "laravel", "banq", "thegardenboys"],
+    "keywords": [
+        "framework",
+        "laravel",
+        "banq",
+        "thegardenboys"
+    ],
+    "version": "0.1.0",
     "license": "MIT",
     "require": {
         "php": "^8.2",
