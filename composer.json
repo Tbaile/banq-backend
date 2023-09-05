@@ -12,21 +12,21 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "guzzlehttp/guzzle": "^7.8.0",
-        "laravel/framework": "^v10.21.0",
-        "laravel/sanctum": "^3.2.6",
-        "laravel/tinker": "^2.8.2"
+        "guzzlehttp/guzzle": "^7.8",
+        "laravel/framework": "^v10.21",
+        "laravel/sanctum": "^3.2",
+        "laravel/tinker": "^2.8"
     },
     "require-dev": {
-        "fakerphp/faker": "^1.23.0",
-        "laravel/pint": "^1.12.0",
-        "laravel/telescope": "^v4.16.2",
-        "mockery/mockery": "^1.6.6",
-        "nunomaduro/collision": "^v7.8.1",
-        "pestphp/pest": "^v2.16.1",
-        "pestphp/pest-plugin-laravel": "^v2.2.0",
-        "spatie/laravel-ignition": "^2.3.0",
-        "tightenco/duster": "^v2.4.0"
+        "fakerphp/faker": "^1.23",
+        "laravel/pint": "^1.12",
+        "laravel/telescope": "^v4.16",
+        "mockery/mockery": "^1.6",
+        "nunomaduro/collision": "^v7.8",
+        "pestphp/pest": "^v2.16",
+        "pestphp/pest-plugin-laravel": "^v2.2",
+        "spatie/laravel-ignition": "^2.3",
+        "tightenco/duster": "^v2.4"
     },
     "autoload": {
         "psr-4": {
