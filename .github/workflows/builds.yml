@@ -25,7 +25,7 @@ jobs:
         uses: docker/metadata-action@v4
         id: app-tags
         with:
-          bake-target: app
+          bake-target: app-production
           images: |
             ghcr.io/${{ github.repository }}-app
           tags: |
@@ -63,7 +63,7 @@ jobs:
         uses: docker/metadata-action@v4
         id: web-tags
         with:
-          bake-target: web
+          bake-target: web-production
           images: |
             ghcr.io/${{ github.repository }}-web
           tags: |
@@ -113,8 +113,8 @@ jobs:
             ${{ steps.app-tags.outputs.bake-file }}
             ${{ steps.web-tags.outputs.bake-file }}
           set: |
-            app.cache-from=${{ steps.app-cache-from.outputs.tags }}
-            app.cache-to=type=registry,ref=${{ steps.app-cache-to.outputs.tags }},mode=max
-            web.cache-from=${{ steps.web-cache-from.outputs.tags }}
-            web.cache-to=type=registry,ref=${{ steps.web-cache-to.outputs.tags }},mode=max
+            app-production.cache-from=${{ steps.app-cache-from.outputs.tags }}
+            app-production.cache-to=type=registry,ref=${{ steps.app-cache-to.outputs.tags }},mode=max
+            web-production.cache-from=${{ steps.web-cache-from.outputs.tags }}
+            web-production.cache-to=type=registry,ref=${{ steps.web-cache-to.outputs.tags }},mode=max
           push: true

@@ -24,12 +24,18 @@ services:
             PGADMIN_DEFAULT_EMAIL: admin@banq.com
             PGADMIN_DEFAULT_PASSWORD: password
     dev:
-        image: banq-development-app
         pull_policy: never
-        hostname: banq-backend-dev
+        build: &dev-build
+            dockerfile: containers/php/Dockerfile
+            target: development
+            args:
+                UID: ${UID:-1000}
+                GID: ${GID:-1000}
+            tags:
+                - banq-development-dev
+        hostname: dev
         depends_on:
-            init:
-                condition: service_completed_successfully
+            - database
         healthcheck:
             test: [ "CMD", "php-fpm-healthcheck" ]
         extra_hosts:
@@ -37,16 +43,16 @@ services:
         volumes: &volumes
             - .:/var/www/html
             - home:/home/www-data
-    init:
-        image: banq-development-app
-        pull_policy: never
-        volumes: *volumes
-        command: /bin/sh -c "composer install && php artisan migrate"
     web:
-        image: banq-development-web
         pull_policy: never
+        build:
+            dockerfile: containers/nginx/Dockerfile
+            tags:
+                - banq-development-web
         healthcheck:
             test: [ "CMD", "curl", "--fail", "--silent", "--output", "/dev/null", "http://localhost/status" ]
+        depends_on:
+            - dev
         volumes: *volumes
         ports:
             - "80:80"
@@ -55,8 +61,12 @@ services:
             FPM_PORT: 9000
 
     testing:
-        image: banq-testing
         pull_policy: never
+        build:
+            <<: *dev-build
+            target: testing
+            tags:
+                - banq-development-testing
         profiles:
             - testing
         depends_on:

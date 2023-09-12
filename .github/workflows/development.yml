@@ -1,8 +1,8 @@
 name: CI
 on:
   push:
-    branches-ignore:
-      - "renovate/**"
+    branches:
+      - main
     tags:
       - "**"
   workflow_dispatch:

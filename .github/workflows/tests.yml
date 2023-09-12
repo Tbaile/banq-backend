@@ -2,6 +2,9 @@ name: Tests
 
 on:
   pull_request:
+  push:
+    branches:
+      - "renovate/**"
   workflow_call:
 
 permissions:
@@ -42,10 +45,8 @@ jobs:
           password: ${{ github.token }}
 
       - name: Build testing target
-        uses: docker/bake-action@v3.1.0
+        uses: docker/bake-action@v4
         with:
-          files: |
-            ./docker-bake.hcl
           targets: testing
           set: |
             *.cache-from=${{ steps.testing-cache.outputs.tags }}
