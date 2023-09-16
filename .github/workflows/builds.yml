@@ -22,7 +22,7 @@ jobs:
         uses: docker/setup-buildx-action@v2
 
       - name: Generate app tags
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         id: app-tags
         with:
           bake-target: app-production
@@ -35,7 +35,7 @@ jobs:
             type=semver,pattern={{major}},enable=${{ !startsWith(github.ref, 'refs/tags/0.') }}
 
       - name: Generate cache-from app tags
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         id: app-cache-from
         with:
           images: |
@@ -48,7 +48,7 @@ jobs:
           sep-tags: ","
 
       - name: Generate cache-to app tags
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         id: app-cache-to
         with:
           images: |
@@ -60,7 +60,7 @@ jobs:
           sep-tags: ","
 
       - name: Generate web tags
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         id: web-tags
         with:
           bake-target: web-production
@@ -73,7 +73,7 @@ jobs:
             type=semver,pattern={{major}},enable=${{ !startsWith(github.ref, 'refs/tags/0.') }}
 
       - name: Generate cache-from web tags
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         id: web-cache-from
         with:
           images: |
@@ -86,7 +86,7 @@ jobs:
           sep-tags: ","
 
       - name: Generate cache-to web tags
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         id: web-cache-to
         with:
           images: |
