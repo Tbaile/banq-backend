@@ -23,7 +23,7 @@ jobs:
         uses: docker/setup-buildx-action@v2
 
       - name: Generate cache tags
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         id: testing-cache
         with:
           images: |
