@@ -23,7 +23,7 @@ Route::post('login', LoginController::class);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('asset', AssetController::class)
-        ->only('store');
+        ->only('index', 'store');
     Route::apiResource('transaction', TransactionController::class)
         ->only(['store']);
     Route::get('/user/me', MeController::class)

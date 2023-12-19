@@ -6,6 +6,7 @@ use App\Http\Requests\StoreAssetRequest;
 use App\Http\Resources\AssetResource;
 use App\Models\Asset;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class AssetController extends Controller
@@ -13,6 +14,11 @@ class AssetController extends Controller
     public function __construct()
     {
         $this->authorizeResource(Asset::class);
+    }
+
+    public function index(Request $request): JsonResponse
+    {
+        return AssetResource::collection($request->user()->assets()->paginate())->response();
     }
 
     /**

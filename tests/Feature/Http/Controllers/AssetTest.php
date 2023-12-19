@@ -3,6 +3,7 @@
 use App\Models\Asset;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Testing\Fluent\AssertableJson;
 
 uses(RefreshDatabase::class);
 
@@ -45,4 +46,20 @@ test('can create assets', function () {
         'currency' => $asset->currency->value,
     ]);
     $this->assertDatabaseCount('assets', 1);
+});
+
+test('can list own assets', function () {
+    $user = User::factory()->hasAssets(5)->create();
+    $asset = $user->assets->first();
+    $otherUser = User::factory()->hasAssets(10)->create();
+    $this->actingAs($user)
+        ->getJson('/api/asset')
+        ->assertSuccessful()
+        ->assertJson(fn(AssertableJson $json) => $json
+            ->has('data', 5, fn(AssertableJson $json) => $json
+                ->where('id', $asset->id)
+                ->where('name', $asset->name)
+                ->where('currency', $asset->currency->value))
+            ->etc()
+        );
 });
