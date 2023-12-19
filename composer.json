@@ -19,15 +19,12 @@
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
-        "friendsofphp/php-cs-fixer": "^3.26",
-        "laravel/pint": "^1.12",
         "laravel/telescope": "^v4.16",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^v7.8",
         "pestphp/pest": "^v2.16",
         "pestphp/pest-plugin-laravel": "^v2.2",
-        "spatie/laravel-ignition": "^2.3",
-        "tightenco/duster": "^v2.4"
+        "spatie/laravel-ignition": "^2.3"
     },
     "autoload": {
         "psr-4": {
