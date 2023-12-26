@@ -13,7 +13,7 @@ test('get user identity', function () {
         ->assertJson([
             'data' => [
                 'name' => $user->name,
-                'email' => $user->email
-            ]
+                'email' => $user->email,
+            ],
         ]);
 });

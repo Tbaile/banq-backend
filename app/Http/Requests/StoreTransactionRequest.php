@@ -31,13 +31,13 @@ class StoreTransactionRequest extends FormRequest
             ],
             'amount' => 'required|decimal:0,2|min:0.01',
             'source_asset_id' => [
-                'exclude_if:type,' . TransactionType::DEPOSIT->value,
+                'exclude_if:type,'.TransactionType::DEPOSIT->value,
                 'required',
                 'numeric',
                 'exists:App\Models\Asset,id',
             ],
             'destination_asset_id' => [
-                'exclude_if:type,' . TransactionType::WITHDRAWAL->value,
+                'exclude_if:type,'.TransactionType::WITHDRAWAL->value,
                 'required',
                 'numeric',
                 'exists:App\Models\Asset,id',

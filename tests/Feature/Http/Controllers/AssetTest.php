@@ -55,11 +55,10 @@ test('can list own assets', function () {
     $this->actingAs($user)
         ->getJson('/api/asset')
         ->assertSuccessful()
-        ->assertJson(fn(AssertableJson $json) => $json
-            ->has('data', 5, fn(AssertableJson $json) => $json
+        ->assertJson(fn (AssertableJson $json) => $json
+            ->has('data', 5, fn (AssertableJson $json) => $json
                 ->where('id', $asset->id)
                 ->where('name', $asset->name)
                 ->where('currency', $asset->currency->value))
-            ->etc()
-        );
+            ->etc());
 });
