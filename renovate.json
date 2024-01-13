@@ -4,6 +4,7 @@
         ":automergeMinor",
         ":prHourlyLimitNone",
         ":disableDependencyDashboard",
+        ":maintainLockFilesWeekly",
         "schedule:weekends"
     ],
     "rangeStrategy": "replace",
