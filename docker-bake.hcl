@@ -4,7 +4,9 @@ target "app-production" {
     tags       = [
         "banq-app"
     ]
-    cache-from = "gha"
+    cache-from = [
+        "type=gha"
+    ]
 }
 
 ## Production Build Specs
@@ -14,7 +16,9 @@ target "web-production" {
     tags       = [
         "banq-web"
     ]
-    cache-from = "gha"
+    cache-from = [
+        "type=gha"
+    ]
 }
 
 group "production" {

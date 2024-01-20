@@ -93,7 +93,7 @@ RUN install-php-extensions opcache \
         fcgi \
         netcat-openbsd
 ADD --checksum=sha256:8a457d0c027feab1c0fc2aae62c30133ab18a116a802649a711953cf66b31b57 \
-    https://raw.githubusercontent.com/renatomefi/php-fpm-healthcheck/v0.5.0/php-fpm-healthcheck /usr/local/bin/php-fpm-healthcheck
+    https://raw.githubusercontent.com/renatomefi/php-fpm-healthcheck/v0.5.0/php-fpm-healthcheck /usr/local/sbin/php-fpm-healthcheck
 ADD --checksum=sha256:206a8f9b2177703fc5aa924d85ad6c72e82413e2d09635b4c9c82a1b65b5b3d5 \
     https://github.com/eficode/wait-for/releases/download/v2.2.4/wait-for /usr/local/bin/wait-for
 # additional configuration for container, adding healthcheck tool and entrypoint

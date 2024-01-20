@@ -63,6 +63,6 @@ jobs:
             ${{ steps.app-tags.outputs.bake-file }}
             ${{ steps.web-tags.outputs.bake-file }}
           set: |
-            app-production.cache-to=type=registry,ref=gha,mode=max
-            web-production.cache-to=type=registry,ref=gha,mode=max
+            app-production.cache-to=type=gha,mode=max
+            web-production.cache-to=type=gha,mode=max
           push: true

@@ -29,11 +29,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ github.token }}
 
-      - name: Build testing target
-        uses: docker/bake-action@v4
-        with:
-          targets: testing
-
       - name: Run testing
         run: |
           cp .env.example .env
