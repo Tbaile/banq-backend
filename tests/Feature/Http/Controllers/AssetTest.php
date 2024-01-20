@@ -62,3 +62,13 @@ test('can list own assets', function () {
                 ->where('currency', $asset->currency->value))
             ->etc());
 });
+
+test('can show balance of asset', function () {
+    $asset = Asset::factory()->hasOutcome(5, [
+        'amount' => 100,
+    ])->hasIncome(5, [
+        'amount' => 20,
+    ])->create();
+
+    $this->assertEquals($asset->outcome()->sum('amount'), 500);
+});

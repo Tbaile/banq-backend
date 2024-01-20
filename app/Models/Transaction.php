@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enum\TransactionType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,13 +18,13 @@ class Transaction extends Model
     ];
 
     protected $casts = [
-        'type' => TransactionType::class,
+        'amount' => 'float',
     ];
 
     /**
      * Returns the source asset for the transaction.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Asset>
+     * @return BelongsTo<Asset>
      */
     public function sourceAsset(): BelongsTo
     {
