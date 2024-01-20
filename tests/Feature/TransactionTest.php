@@ -10,7 +10,6 @@ test('cannot create a description-empty transaction', function () {
     $response = $this->actingAs($user)
         ->postJson('/api/transaction', [
             'description' => '',
-            'type' => $transaction->type,
             'amount' => $transaction->amount,
         ]);
 
@@ -18,31 +17,12 @@ test('cannot create a description-empty transaction', function () {
         ->assertInvalid(['description']);
 });
 
-test('cannot create a wrong type transaction', function (string $type) {
-    $user = User::factory()->create();
-    $transaction = Transaction::factory()->withdraw()->make();
-    $response = $this->actingAs($user)
-        ->postJson('/api/transaction', [
-            'description' => $transaction->description,
-            'type' => $type,
-            'amount' => $transaction->amount,
-        ]);
-
-    $response->assertUnprocessable()
-        ->assertInvalid(['type']);
-})->with([
-    '',
-    'invalid',
-    'WITHDRAWL',
-]);
-
 test('cannot create an transaction with invalid amount', function (string $amount) {
     $user = User::factory()->create();
     $transaction = Transaction::factory()->withdraw()->make();
     $response = $this->actingAs($user)
         ->postJson('/api/transaction', [
             'description' => $transaction->description,
-            'type' => $transaction->type,
             'amount' => $amount,
         ]);
 
@@ -55,13 +35,24 @@ test('cannot create an transaction with invalid amount', function (string $amoun
     '-0.01',
 ]);
 
+test('cannot create a transaction without assets', function () {
+    $user = User::factory()->create();
+    $transaction = Transaction::factory()->make();
+    $response = $this->actingAs($user)
+        ->postJson('/api/transaction', [
+            'description' => $transaction->description,
+            'amount' => $transaction->amount,
+        ]);
+    $response->assertUnprocessable()
+        ->assertInvalid(['source_asset_id' => 'required', 'destination_asset_id' => 'required']);
+});
+
 test('cannot create a withdraw without source_asset', function (string $sourceAsset) {
     $user = User::factory()->create();
     $transaction = Transaction::factory()->withdraw()->make();
     $response = $this->actingAs($user)
         ->postJson('/api/transaction', [
             'description' => $transaction->description,
-            'type' => $transaction->type,
             'amount' => $transaction->amount,
             'source_asset_id' => $sourceAsset,
         ]);
@@ -81,7 +72,6 @@ test('create a withdraw', function () {
     $response = $this->actingAs($user)
         ->postJson('/api/transaction', [
             'description' => $transaction->description,
-            'type' => $transaction->type,
             'amount' => $transaction->amount,
             'source_asset_id' => $sourceAsset->id,
         ]);
@@ -92,7 +82,6 @@ test('create a withdraw', function () {
     $this->assertDatabaseCount('transactions', 1);
     $this->assertDatabaseHas('transactions', [
         'description' => $transaction->description,
-        'type' => $transaction->type,
         'amount' => $transaction->amount,
         'source_asset_id' => $sourceAsset->id,
     ]);

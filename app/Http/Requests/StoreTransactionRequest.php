@@ -2,9 +2,8 @@
 
 namespace App\Http\Requests;
 
-use App\Enum\TransactionType;
+use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Enum;
 
 class StoreTransactionRequest extends FormRequest
 {
@@ -19,26 +18,20 @@ class StoreTransactionRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string>
+     * @return array<string, Rule|array|string>
      */
     public function rules(): array
     {
         return [
             'description' => 'required|string|max:255',
-            'type' => [
-                'required',
-                new Enum(TransactionType::class),
-            ],
             'amount' => 'required|decimal:0,2|min:0.01',
             'source_asset_id' => [
-                'exclude_if:type,'.TransactionType::DEPOSIT->value,
-                'required',
+                'required_without:destination_asset_id',
                 'numeric',
                 'exists:App\Models\Asset,id',
             ],
             'destination_asset_id' => [
-                'exclude_if:type,'.TransactionType::WITHDRAWAL->value,
-                'required',
+                'required_without:source_asset_id',
                 'numeric',
                 'exists:App\Models\Asset,id',
             ],

@@ -12,7 +12,6 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->string('description');
-            $table->string('type');
             $table->decimal('amount', 10);
             $table->foreignIdFor(Asset::class, 'source_asset_id')
                 ->nullable()
