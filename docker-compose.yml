@@ -7,7 +7,7 @@ services:
             interval: 1s
             start_period: 10s
         ports:
-            - "5432"
+            - "5432:5432"
         volumes:
             - database:/var/lib/postgresql/data
         environment:
@@ -20,50 +20,52 @@ services:
             - "8080:8080"
         environment:
             ADMINER_DEFAULT_SERVER: database
-    dev:
+    app:
         pull_policy: never
-        build: &dev-build
+        build: &app-build
             dockerfile: containers/php/Dockerfile
             target: development
             args:
                 UID: ${UID:-1000}
                 GID: ${GID:-1000}
             tags:
-                - banq-development-dev
-        hostname: dev
+                - banq-backend-app-dev
+        hostname: app
         depends_on:
             - database
         healthcheck:
             test: [ "CMD", "php-fpm-healthcheck" ]
         extra_hosts:
             - 'host.docker.internal:host-gateway'
-        volumes: &volumes
+        volumes: &app-volumes
             - .:/var/www/html
             - home:/home/www-data
+        env_file:
+            - .env
     web:
         pull_policy: never
         build:
             dockerfile: containers/nginx/Dockerfile
             tags:
-                - banq-development-web
+                - banq-backend-web-dev
         healthcheck:
             test: [ "CMD", "curl", "--fail", "--silent", "--output", "/dev/null", "http://localhost/status" ]
         depends_on:
-            - dev
-        volumes: *volumes
+            - app
+        volumes: *app-volumes
         ports:
             - "80:80"
         environment:
-            FPM_URL: dev
+            FPM_URL: app
             FPM_PORT: 9000
 
     testing:
         pull_policy: never
         build:
-            <<: *dev-build
+            <<: *app-build
             target: testing
             tags:
-                - banq-development-testing
+                - banq-backend-app-testing
         profiles:
             - testing
         depends_on:

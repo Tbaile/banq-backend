@@ -53,8 +53,10 @@ RUN apk add --no-cache \
     && echo "access.log = /dev/null" >> "/usr/local/etc/php-fpm.d/zz-docker.conf" \
     && echo "ALL ALL=(ALL:ALL) NOPASSWD: ALL" > "/etc/sudoers.d/password_less_sudo"
 # copy entrypoint
-ADD https://raw.githubusercontent.com/renatomefi/php-fpm-healthcheck/v0.5.0/php-fpm-healthcheck /usr/local/bin/php-fpm-healthcheck
-ADD https://github.com/eficode/wait-for/releases/download/v2.2.4/wait-for /usr/local/bin/wait-for
+ADD --checksum=sha256:8a457d0c027feab1c0fc2aae62c30133ab18a116a802649a711953cf66b31b57 \
+    https://raw.githubusercontent.com/renatomefi/php-fpm-healthcheck/v0.5.0/php-fpm-healthcheck /usr/local/bin/php-fpm-healthcheck
+ADD --checksum=sha256:206a8f9b2177703fc5aa924d85ad6c72e82413e2d09635b4c9c82a1b65b5b3d5 \
+    https://github.com/eficode/wait-for/releases/download/v2.2.4/wait-for /usr/local/bin/wait-for
 COPY --link containers/php/entrypoint.sh /usr/local/bin/entrypoint
 # setup user, group and chmod entrypoint
 ARG UID
@@ -90,8 +92,10 @@ RUN install-php-extensions opcache \
     && apk add --no-cache \
         fcgi \
         netcat-openbsd
-ADD https://raw.githubusercontent.com/renatomefi/php-fpm-healthcheck/v0.5.0/php-fpm-healthcheck /usr/local/sbin/php-fpm-healthcheck
-ADD https://github.com/eficode/wait-for/releases/download/v2.2.4/wait-for /usr/local/bin/wait-for
+ADD --checksum=sha256:8a457d0c027feab1c0fc2aae62c30133ab18a116a802649a711953cf66b31b57 \
+    https://raw.githubusercontent.com/renatomefi/php-fpm-healthcheck/v0.5.0/php-fpm-healthcheck /usr/local/bin/php-fpm-healthcheck
+ADD --checksum=sha256:206a8f9b2177703fc5aa924d85ad6c72e82413e2d09635b4c9c82a1b65b5b3d5 \
+    https://github.com/eficode/wait-for/releases/download/v2.2.4/wait-for /usr/local/bin/wait-for
 # additional configuration for container, adding healthcheck tool and entrypoint
 COPY --link containers/php/conf.d "$PHP_INI_DIR/conf.d"
 COPY --link containers/php/entrypoint.sh /usr/local/sbin/entrypoint
