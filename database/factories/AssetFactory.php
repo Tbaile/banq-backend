@@ -19,7 +19,7 @@ class AssetFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->name(),
+            'name' => $this->faker->words(2, true),
             'currency' => $this->faker->randomElement(CurrencyEnum::cases()),
             'user_id' => User::factory(),
         ];
