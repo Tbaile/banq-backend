@@ -18,6 +18,7 @@ class AssetResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'currency' => $this->currency,
+            'balance' => (float) $this->income()->sum('amount') - $this->outcome()->sum('amount'),
         ];
     }
 }

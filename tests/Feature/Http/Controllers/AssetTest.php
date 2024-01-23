@@ -51,7 +51,7 @@ test('can create assets', function () {
 test('can list own assets', function () {
     $user = User::factory()->hasAssets(5)->create();
     $asset = $user->assets->first();
-    $otherUser = User::factory()->hasAssets(10)->create();
+    User::factory()->hasAssets(10)->create();
     $this->actingAs($user)
         ->getJson('/api/asset')
         ->assertSuccessful()
@@ -59,16 +59,28 @@ test('can list own assets', function () {
             ->has('data', 5, fn (AssertableJson $json) => $json
                 ->where('id', $asset->id)
                 ->where('name', $asset->name)
-                ->where('currency', $asset->currency->value))
+                ->where('currency', $asset->currency->value)
+                ->where('balance', 0))
             ->etc());
 });
 
 test('can show balance of asset', function () {
-    $asset = Asset::factory()->hasOutcome(5, [
-        'amount' => 100,
-    ])->hasIncome(5, [
-        'amount' => 20,
-    ])->create();
+    $user = User::factory()->create();
+    Asset::factory()
+        ->recycle($user)
+        ->forUser()
+        ->hasOutcome(5, [
+            'amount' => 100,
+        ])->hasIncome(5, [
+            'amount' => 20,
+        ])->create();
 
-    $this->assertEquals($asset->outcome()->sum('amount'), 500);
+    $this->actingAs($user)
+        ->getJson('/api/asset')
+        ->assertSuccessful()
+        ->assertJson(fn (AssertableJson $json) => $json
+            ->has('data', 1, fn (AssertableJson $json) => $json
+                ->where('balance', 400)
+                ->etc())
+            ->etc());
 });
