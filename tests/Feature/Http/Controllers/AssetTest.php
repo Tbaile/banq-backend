@@ -78,9 +78,9 @@ test('can show balance of asset', function () {
     $this->actingAs($user)
         ->getJson('/api/asset')
         ->assertSuccessful()
-        ->assertJson(fn (AssertableJson $json) => $json
-            ->has('data', 1, fn (AssertableJson $json) => $json
-                ->where('balance', 400)
+        ->assertJson(fn(AssertableJson $json) => $json
+            ->has('data', 1, fn(AssertableJson $json) => $json
+                ->where('balance', -400)
                 ->etc())
             ->etc());
 });

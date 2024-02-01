@@ -34,16 +34,27 @@ class Asset extends Model
     /**
      * @return HasMany<Transaction>
      */
+    public function income(): HasMany
+    {
+        return $this->hasMany(Transaction::class, 'destination_asset_id');
+    }
+
+    /**
+     * @return HasMany<Transaction>
+     */
     public function outcome(): HasMany
     {
         return $this->hasMany(Transaction::class, 'source_asset_id');
     }
 
     /**
-     * @return HasMany<Transaction>
+     * Load the sum of the given column for the relation.
+     *
+     * @return float
      */
-    public function income(): HasMany
+    public function balance(): float
     {
-        return $this->hasMany(Transaction::class, 'destination_asset_id');
+        $this->loadSum('income', 'amount')->loadSum('outcome', 'amount');
+        return $this->income_sum_amount - $this->outcome_sum_amount;
     }
 }
