@@ -32,11 +32,23 @@ class Asset extends Model
     }
 
     /**
+     * Load the sum of the given column for the relation.
+     */
+    public function balance(): float
+    {
+        $this->loadSum('income', 'amount')->loadSum('outcome', 'amount');
+
+        return $this->income_sum_amount - $this->outcome_sum_amount;
+    }
+
+    /**
+     * Return a list of all transactions for the asset.
+     *
      * @return HasMany<Transaction>
      */
-    public function income(): HasMany
+    public function transactions(): HasMany
     {
-        return $this->hasMany(Transaction::class, 'destination_asset_id');
+        return $this->outcome()->union($this->income());
     }
 
     /**
@@ -48,13 +60,10 @@ class Asset extends Model
     }
 
     /**
-     * Load the sum of the given column for the relation.
-     *
-     * @return float
+     * @return HasMany<Transaction>
      */
-    public function balance(): float
+    public function income(): HasMany
     {
-        $this->loadSum('income', 'amount')->loadSum('outcome', 'amount');
-        return $this->income_sum_amount - $this->outcome_sum_amount;
+        return $this->hasMany(Transaction::class, 'destination_asset_id');
     }
 }

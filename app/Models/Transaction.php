@@ -15,10 +15,12 @@ class Transaction extends Model
         'type',
         'amount',
         'source_asset_id',
+        'date',
     ];
 
     protected $casts = [
-        'amount' => 'float',
+        'amount' => 'decimal:2',
+        'date' => 'datetime',
     ];
 
     /**

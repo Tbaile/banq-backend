@@ -78,9 +78,43 @@ test('can show balance of asset', function () {
     $this->actingAs($user)
         ->getJson('/api/asset')
         ->assertSuccessful()
-        ->assertJson(fn(AssertableJson $json) => $json
-            ->has('data', 1, fn(AssertableJson $json) => $json
+        ->assertJson(fn (AssertableJson $json) => $json
+            ->has('data', 1, fn (AssertableJson $json) => $json
                 ->where('balance', -400)
                 ->etc())
             ->etc());
+});
+
+test('cannot show not owned assets', function () {
+    $user = User::factory()->create();
+    $otherUser = User::factory()->hasAssets()->create();
+    $this->actingAs($user)
+        ->getJson('/api/asset/'.$otherUser->assets->first()->id)
+        ->assertForbidden();
+});
+
+test('cannot show asset to unauthenticated', function () {
+    $asset = Asset::factory()->create();
+    $this->getJson('/api/asset/'.$asset->id)
+        ->assertUnauthorized();
+});
+
+test('show asset', function () {
+    $user = User::factory()->create();
+    $asset = Asset::factory()->recycle($user)->hasIncome(4, [
+        'amount' => 100,
+    ])->hasOutcome(2, [
+        'amount' => 20,
+    ])->create();
+    $this->actingAs($user)
+        ->getJson('/api/asset/'.$asset->id)
+        ->assertSuccessful()
+        ->assertJson(fn (AssertableJson $json) => $json
+            ->has('data', fn (AssertableJson $json) => $json
+                ->where('id', $asset->id)
+                ->where('name', $asset->name)
+                ->where('currency', $asset->currency->value)
+                ->where('balance', 360)
+            )
+        );
 });

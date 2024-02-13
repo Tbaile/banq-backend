@@ -22,6 +22,16 @@ class AssetController extends Controller
     }
 
     /**
+     * Display the specified asset.
+     *
+     * @return AssetResource
+     */
+    public function show(Asset $asset)
+    {
+        return new AssetResource($asset->load('income', 'outcome'));
+    }
+
+    /**
      * Store a newly created resource in storage.
      */
     public function store(StoreAssetRequest $request): JsonResponse

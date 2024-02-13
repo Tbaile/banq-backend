@@ -13,6 +13,7 @@ return new class extends Migration
             $table->id();
             $table->string('description');
             $table->decimal('amount', 10);
+            $table->dateTime('date');
             $table->foreignIdFor(Asset::class, 'source_asset_id')
                 ->nullable()
                 ->constrained('assets');

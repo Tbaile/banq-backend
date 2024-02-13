@@ -2,14 +2,22 @@
 
 namespace App\Policies;
 
+use App\Models\Asset;
+use App\Models\User;
+
 class AssetPolicy
 {
     /**
-     * Can the user list its own assets.
+     * Can the user view any assets
      */
     public function viewAny(): bool
     {
         return true;
+    }
+
+    public function view(User $user, Asset $asset): bool
+    {
+        return $user->id == $asset->user_id;
     }
 
     /**

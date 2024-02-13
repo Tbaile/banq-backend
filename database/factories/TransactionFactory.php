@@ -21,6 +21,7 @@ class TransactionFactory extends Factory
         return [
             'description' => $this->faker->words(asText: true),
             'amount' => $this->faker->randomFloat(2, max: 10000),
+            'date' => $this->faker->dateTimeThisMonth(),
         ];
     }
 

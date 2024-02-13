@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use DateTimeInterface;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -35,6 +36,7 @@ class StoreTransactionRequest extends FormRequest
                 'numeric',
                 'exists:App\Models\Asset,id',
             ],
+            'date' => 'required|date_format:'.DateTimeInterface::ATOM,
         ];
     }
 }

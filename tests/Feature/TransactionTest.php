@@ -74,6 +74,7 @@ test('create a withdraw', function () {
             'description' => $transaction->description,
             'amount' => $transaction->amount,
             'source_asset_id' => $sourceAsset->id,
+            'date' => $transaction->date->toAtomString(),
         ]);
 
     $response->assertCreated()
@@ -84,5 +85,6 @@ test('create a withdraw', function () {
         'description' => $transaction->description,
         'amount' => $transaction->amount,
         'source_asset_id' => $sourceAsset->id,
+        'date' => $transaction->date,
     ]);
 });
