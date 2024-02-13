@@ -14,6 +14,6 @@ class AssetTransactionController extends Controller
     {
         $this->authorize('view', $asset);
 
-        return TransactionResource::collection($asset->transactions()->orderByDesc('date')->get());
+        return TransactionResource::collection($asset->transactions()->orderByDesc('date')->orderByDesc('id')->get());
     }
 }

@@ -16,16 +16,12 @@ test('assert can\'t view transactions for not owned asset', function () {
 
 it('returns existing transactions', function () {
     $asset = Asset::factory()
-        ->hasIncome(3, [
-            'amount' => 100,
-        ])
-        ->hasOutcome(6, [
-            'amount' => 10,
-        ])
+        ->hasIncome(3)
+        ->hasOutcome(6)
         ->create();
 
-    $latestTransaction = $asset->transactions()->latest('date')->first();
-    $olderTransaction = $asset->transactions()->oldest('date')->first();
+    $latestTransaction = $asset->transactions()->orderByDesc('date')->orderByDesc('id')->first();
+    $olderTransaction = $asset->transactions()->orderBy('date')->orderBy('id')->first();
 
     $response = $this->actingAs($asset->user)
         ->getJson('/api/asset/'.$asset->id.'/transaction');
@@ -37,12 +33,11 @@ it('returns existing transactions', function () {
                 ->where('id', $latestTransaction->id)
                 ->where('description', $latestTransaction->description)
                 ->where('amount', $latestTransaction->amount)
-                ->where('date', $latestTransaction->date->toAtomString())
-            )->has('data.8', fn (AssertableJson $json) => $json
-            ->where('id', $olderTransaction->id)
-            ->where('description', $olderTransaction->description)
-            ->where('amount', $latestTransaction->amount)
-            ->where('date', $olderTransaction->date->toAtomString())
-            )
+                ->where('date', $latestTransaction->date->toAtomString()))
+            ->has('data.8', fn (AssertableJson $json) => $json
+                ->where('id', $olderTransaction->id)
+                ->where('description', $olderTransaction->description)
+                ->where('amount', $olderTransaction->amount)
+                ->where('date', $olderTransaction->date->toAtomString()))
         );
 });
