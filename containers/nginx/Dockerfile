@@ -1,4 +1,4 @@
-FROM nginx:1.25.3-alpine as production
+FROM nginx:1.25.4-alpine as production
 WORKDIR /var/www/html
 RUN apk add --no-cache netcat-openbsd
 COPY containers/nginx/config /etc/nginx
