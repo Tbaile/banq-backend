@@ -6,7 +6,6 @@ use App\Http\Controllers\User\LoginController;
 use App\Http\Controllers\User\MeController;
 use App\Http\Controllers\User\RegisterController;
 use Illuminate\Support\Facades\Route;
-use Spatie\Health\Http\Controllers\SimpleHealthCheckController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,8 +17,6 @@ use Spatie\Health\Http\Controllers\SimpleHealthCheckController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
-Route::get('health', SimpleHealthCheckController::class);
 
 Route::post('register', RegisterController::class);
 Route::post('login', LoginController::class);
