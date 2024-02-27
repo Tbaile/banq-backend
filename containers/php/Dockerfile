@@ -66,6 +66,7 @@ ENV XDEBUG_CONFIG="client_host=host.docker.internal"
 USER www-data
 ENTRYPOINT ["entrypoint"]
 CMD ["php-fpm"]
+HEALTHCHECK CMD php artisan health:check --no-notification --do-not-store-results --fail-command-on-failing-check
 
 FROM dev_common as testing
 # copy application and testing files
@@ -109,3 +110,4 @@ RUN composer dump-autoload \
 RUN echo $(find . -name "*.php" | wc -l | awk '{print (int($1/1000)+2)*1000}') >> "$PHP_INI_DIR/conf.d/opcache.ini"
 # add volumes needed to be shared thoughout the app containers
 VOLUME ["/var/www/html/bootstrap", "/var/www/html/storage"]
+HEALTHCHECK CMD php artisan health:check --no-notification --do-not-store-results --fail-command-on-failing-check

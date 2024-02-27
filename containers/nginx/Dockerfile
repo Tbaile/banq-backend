@@ -8,3 +8,4 @@ COPY containers/nginx/entrypoint.sh /docker-entrypoint.d/90-wait-fpm.sh
 RUN chmod u+x /usr/local/bin/wait-for \
     && chmod +x /docker-entrypoint.d/90-wait-fpm.sh
 COPY public ./public
+HEALTHCHECK CMD curl --fail --silent --output /dev/null http://localhost/status

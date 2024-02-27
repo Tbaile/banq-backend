@@ -4,8 +4,6 @@ services:
         image: postgres:15.6-alpine
         healthcheck:
             test: [ "CMD", "pg_isready", "-q", "-d", $DB_DATABASE, "-U", $DB_USERNAME ]
-            interval: 1s
-            start_period: 10s
         ports:
             - "5432:5432"
         volumes:
@@ -33,8 +31,6 @@ services:
         hostname: app
         depends_on:
             - database
-        healthcheck:
-            test: [ "CMD", "php-fpm-healthcheck" ]
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         volumes: &app-volumes
@@ -48,8 +44,6 @@ services:
             dockerfile: containers/nginx/Dockerfile
             tags:
                 - banq-backend-web-dev
-        healthcheck:
-            test: [ "CMD", "curl", "--fail", "--silent", "--output", "/dev/null", "http://localhost/status" ]
         depends_on:
             - app
         volumes: *app-volumes
