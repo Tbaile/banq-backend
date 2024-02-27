@@ -106,15 +106,53 @@ test('show asset', function () {
     ])->hasOutcome(2, [
         'amount' => 20,
     ])->create();
-    $this->actingAs($user)
-        ->getJson('/api/asset/'.$asset->id)
-        ->assertSuccessful()
+    $response = $this->actingAs($user)->getJson('/api/asset/'.$asset->id);
+    $response->assertSuccessful()
         ->assertJson(fn (AssertableJson $json) => $json
             ->has('data', fn (AssertableJson $json) => $json
                 ->where('id', $asset->id)
                 ->where('name', $asset->name)
                 ->where('currency', $asset->currency->value)
                 ->where('balance', 360)
+                ->has('transactions', 6)
             )
+        );
+});
+
+test('assert can\'t view transactions for not owned asset', function () {
+    $asset = Asset::factory()->create();
+    $this->getJson('/api/asset/'.$asset->id)
+        ->assertUnauthorized();
+    $user = User::factory()->create();
+    $this->actingAs($user)
+        ->getJson('/api/asset/'.$asset->id)
+        ->assertForbidden();
+});
+
+it('returns existing transactions', function () {
+    $asset = Asset::factory()
+        ->hasIncome(3)
+        ->hasOutcome(6)
+        ->create();
+
+    $latestTransaction = $asset->transactions()->orderByDesc('date')->orderByDesc('id')->first();
+    $olderTransaction = $asset->transactions()->orderBy('date')->orderBy('id')->first();
+
+    $response = $this->actingAs($asset->user)
+        ->getJson('/api/asset/'.$asset->id);
+    $response
+        ->assertSuccessful()
+        ->assertJson(fn (AssertableJson $json) => $json
+            ->has('data.transactions', 9)
+            ->has('data.transactions.0', fn (AssertableJson $json) => $json
+                ->where('id', $latestTransaction->id)
+                ->where('description', $latestTransaction->description)
+                ->where('amount', $latestTransaction->amount)
+                ->where('date', $latestTransaction->date->toAtomString()))
+            ->has('data.transactions.8', fn (AssertableJson $json) => $json
+                ->where('id', $olderTransaction->id)
+                ->where('description', $olderTransaction->description)
+                ->where('amount', $olderTransaction->amount)
+                ->where('date', $olderTransaction->date->toAtomString()))
         );
 });

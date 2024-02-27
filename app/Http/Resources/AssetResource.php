@@ -19,6 +19,10 @@ class AssetResource extends JsonResource
             'name' => $this->name,
             'currency' => $this->currency,
             'balance' => $this->balance(),
+            'transactions' => TransactionResource::collection($this->whenLoaded(
+                'transactions',
+                $this->transactions()->orderByDesc('date')->orderByDesc('id')->get()
+            )),
         ];
     }
 }

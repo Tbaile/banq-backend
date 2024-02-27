@@ -28,7 +28,7 @@ class AssetController extends Controller
      */
     public function show(Asset $asset)
     {
-        return new AssetResource($asset->load('income', 'outcome'));
+        return new AssetResource($asset->load('transactions'));
     }
 
     /**
