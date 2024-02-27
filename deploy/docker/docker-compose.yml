@@ -11,21 +11,9 @@ services:
             POSTGRES_DB: $DB_DATABASE
             POSTGRES_USER: $DB_USERNAME
             POSTGRES_PASSWORD: $DB_PASSWORD
-    setup:
-        image: ghcr.io/thegardenboys/banq-backend-app:latest
-        volumes:
-            - bootstrap:/var/www/html/bootstrap
-            - storage:/var/www/html/storage
-        env_file: .env
-        command: [ "setup" ]
     app:
         image: ghcr.io/thegardenboys/banq-backend-app:latest
         restart: unless-stopped
-        depends_on:
-            setup:
-                condition: service_completed_successfully
-        healthcheck:
-            test: [ "CMD", "php-fpm-healthcheck" ]
         volumes:
             - bootstrap:/var/www/html/bootstrap
             - storage:/var/www/html/storage
@@ -33,10 +21,6 @@ services:
     web:
         image: ghcr.io/thegardenboys/banq-backend-web:latest
         restart: unless-stopped
-        healthcheck:
-            test: [ "CMD", "curl", "--fail", "--silent", "--output", "/dev/null", "http://localhost/status" ]
-        ports:
-            - "80"
         environment:
             FPM_URL: app
             FPM_PORT: 9000
