@@ -32,4 +32,14 @@ class Transaction extends Model
     {
         return $this->belongsTo(Asset::class, 'source_asset_id');
     }
+
+    /**
+     * Returns the destination asset for the transaction.
+     *
+     * @return BelongsTo<Asset>
+     */
+    public function destinationAsset(): BelongsTo
+    {
+        return $this->belongsTo(Asset::class, 'destination_asset_id');
+    }
 }

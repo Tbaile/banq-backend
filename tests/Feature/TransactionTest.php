@@ -6,7 +6,7 @@ use App\Models\User;
 
 test('cannot create a description-empty transaction', function () {
     $user = User::factory()->create();
-    $transaction = Transaction::factory()->withdraw()->make();
+    $transaction = Transaction::factory()->withdrawal()->make();
     $response = $this->actingAs($user)
         ->postJson('/api/transaction', [
             'description' => '',
@@ -19,7 +19,7 @@ test('cannot create a description-empty transaction', function () {
 
 test('cannot create an transaction with invalid amount', function (string $amount) {
     $user = User::factory()->create();
-    $transaction = Transaction::factory()->withdraw()->make();
+    $transaction = Transaction::factory()->withdrawal()->make();
     $response = $this->actingAs($user)
         ->postJson('/api/transaction', [
             'description' => $transaction->description,
@@ -49,7 +49,7 @@ test('cannot create a transaction without assets', function () {
 
 test('cannot create a withdraw without source_asset', function (string $sourceAsset) {
     $user = User::factory()->create();
-    $transaction = Transaction::factory()->withdraw()->make();
+    $transaction = Transaction::factory()->withdrawal()->make();
     $response = $this->actingAs($user)
         ->postJson('/api/transaction', [
             'description' => $transaction->description,
@@ -68,7 +68,7 @@ test('cannot create a withdraw without source_asset', function (string $sourceAs
 test('create a withdraw', function () {
     $user = User::factory()->create();
     $sourceAsset = Asset::factory()->recycle($user)->create();
-    $transaction = Transaction::factory()->recycle($sourceAsset)->withdraw()->make();
+    $transaction = Transaction::factory()->recycle($sourceAsset)->withdrawal()->make();
     $response = $this->actingAs($user)
         ->postJson('/api/transaction', [
             'description' => $transaction->description,

@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Asset;
+use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Testing\Fluent\AssertableJson;
@@ -148,11 +149,37 @@ it('returns existing transactions', function () {
                 ->where('id', $latestTransaction->id)
                 ->where('description', $latestTransaction->description)
                 ->where('amount', $latestTransaction->amount)
-                ->where('date', $latestTransaction->date->toAtomString()))
+                ->where('date', $latestTransaction->date->toAtomString())
+                ->where('source_asset_id', $latestTransaction->source_asset_id)
+                ->where('destination_asset_id', $latestTransaction->destination_asset_id)
+                ->whereType('type', 'string'))
             ->has('data.transactions.8', fn (AssertableJson $json) => $json
                 ->where('id', $olderTransaction->id)
                 ->where('description', $olderTransaction->description)
                 ->where('amount', $olderTransaction->amount)
-                ->where('date', $olderTransaction->date->toAtomString()))
+                ->where('date', $olderTransaction->date->toAtomString())
+                ->where('source_asset_id', $olderTransaction->source_asset_id)
+                ->where('destination_asset_id', $olderTransaction->destination_asset_id)
+                ->whereType('type', 'string'))
         );
 });
+
+test('type is correctly returned', function (Transaction $transaction, string $type) {
+    $user = $transaction->destinationAsset->user ?? $transaction->sourceAsset->user;
+    $asset = $transaction->destinationAsset ?? $transaction->sourceAsset;
+
+    $response = $this->actingAs($user)
+        ->getJson('/api/asset/'.$asset->id);
+
+    $response
+        ->assertSuccessful()
+        ->assertJson(fn (AssertableJson $json) => $json
+            ->has('data.transactions.0', fn (AssertableJson $json) => $json
+                ->where('type', $type)
+                ->etc())
+        );
+})->with([
+    [fn () => Transaction::factory()->deposit()->create(), 'deposit'],
+    [fn () => Transaction::factory()->transfer()->create(), 'transfer'],
+    [fn () => Transaction::factory()->withdrawal()->create(), 'withdrawal'],
+]);
