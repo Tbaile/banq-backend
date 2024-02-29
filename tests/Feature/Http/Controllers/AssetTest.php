@@ -115,7 +115,7 @@ test('show asset', function () {
                 ->where('name', $asset->name)
                 ->where('currency', $asset->currency->value)
                 ->where('balance', 360)
-                ->has('transactions', 6)
+                ->has('transactions', 5)
             )
         );
 });
@@ -137,14 +137,14 @@ it('returns existing transactions', function () {
         ->create();
 
     $latestTransaction = $asset->transactions()->orderByDesc('date')->orderByDesc('id')->first();
-    $olderTransaction = $asset->transactions()->orderBy('date')->orderBy('id')->first();
+    $olderTransaction = $asset->transactions()->orderByDesc('date')->orderByDesc('id')->skip(4)->first();
 
     $response = $this->actingAs($asset->user)
         ->getJson('/api/asset/'.$asset->id);
     $response
         ->assertSuccessful()
         ->assertJson(fn (AssertableJson $json) => $json
-            ->has('data.transactions', 9)
+            ->has('data.transactions', 5)
             ->has('data.transactions.0', fn (AssertableJson $json) => $json
                 ->where('id', $latestTransaction->id)
                 ->where('description', $latestTransaction->description)
@@ -153,7 +153,7 @@ it('returns existing transactions', function () {
                 ->where('source_asset_id', $latestTransaction->source_asset_id)
                 ->where('destination_asset_id', $latestTransaction->destination_asset_id)
                 ->whereType('type', 'string'))
-            ->has('data.transactions.8', fn (AssertableJson $json) => $json
+            ->has('data.transactions.4', fn (AssertableJson $json) => $json
                 ->where('id', $olderTransaction->id)
                 ->where('description', $olderTransaction->description)
                 ->where('amount', $olderTransaction->amount)

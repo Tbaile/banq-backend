@@ -3,6 +3,7 @@
 use App\Models\Asset;
 use App\Models\Transaction;
 use App\Models\User;
+use Illuminate\Testing\Fluent\AssertableJson;
 
 test('cannot create a description-empty transaction', function () {
     $user = User::factory()->create();
@@ -87,4 +88,31 @@ test('create a withdraw', function () {
         'source_asset_id' => $sourceAsset->id,
         'date' => $transaction->date,
     ]);
+});
+
+test('list transactions for specific asset', function () {
+    $user = Asset::factory()->create();
+    $asset = Asset::factory()->recycle($user)->create();
+    $withdrawals = Transaction::factory()->count(10)->withdrawal($asset)->create();
+    $deposits = Transaction::factory()->count(10)->deposit($asset)->create();
+    $transfers = Transaction::factory()->count(10)->transfer($asset, $asset)->create();
+    $transactions = $withdrawals->merge($deposits)->merge($transfers);
+    $firstTransaction = $transactions->sortByDesc('date')->first();
+
+    $response = $this->actingAs($asset->user)
+        ->getJson("/api/asset/{$asset->id}/transaction");
+    $response
+        ->assertSuccessful()
+        ->assertJson(fn (AssertableJson $json) => $json
+            ->count('data', 15)
+            ->has('data.0', fn (AssertableJson $json) => $json
+                ->where('id', $firstTransaction->id)
+                ->where('description', $firstTransaction->description)
+                ->where('amount', $firstTransaction->amount)
+                ->where('date', $firstTransaction->date->toAtomString())
+                ->where('source_asset_id', $firstTransaction->source_asset_id)
+                ->where('destination_asset_id', $firstTransaction->destination_asset_id)
+                ->etc()
+            )->etc()
+        );
 });

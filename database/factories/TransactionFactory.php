@@ -25,25 +25,25 @@ class TransactionFactory extends Factory
         ];
     }
 
-    public function withdrawal(): self
+    public function withdrawal(?Asset $asset = null): self
     {
         return $this->state([
-            'source_asset_id' => Asset::factory(),
+            'source_asset_id' => $asset ?? Asset::factory(),
         ]);
     }
 
-    public function deposit(): self
+    public function deposit(?Asset $asset = null): self
     {
         return $this->state([
-            'destination_asset_id' => Asset::factory(),
+            'destination_asset_id' => $asset ?? Asset::factory(),
         ]);
     }
 
-    public function transfer(): self
+    public function transfer(?Asset $source = null, ?Asset $destination = null): self
     {
         return $this->state([
-            'source_asset_id' => Asset::factory(),
-            'destination_asset_id' => Asset::factory(),
+            'source_asset_id' => $source ?? Asset::factory(),
+            'destination_asset_id' => $destination ?? Asset::factory(),
         ]);
     }
 }

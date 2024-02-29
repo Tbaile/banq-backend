@@ -21,7 +21,7 @@ class AssetResource extends JsonResource
             'balance' => $this->balance(),
             'transactions' => TransactionResource::collection($this->whenLoaded(
                 'transactions',
-                $this->transactions()->orderByDesc('date')->orderByDesc('id')->get()
+                $this->transactions()->orderByDesc('date')->orderByDesc('id')->limit(5)->get()
             )),
         ];
     }
