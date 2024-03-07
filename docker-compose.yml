@@ -20,17 +20,13 @@ services:
             ADMINER_DEFAULT_SERVER: database
     app:
         pull_policy: never
-        build: &app-build
+        build:
             dockerfile: containers/php/Dockerfile
             target: development
             args:
                 UID: ${UID:-1000}
                 GID: ${GID:-1000}
-            tags:
-                - banq-backend-app-dev
         hostname: app
-        depends_on:
-            - database
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         volumes: &app-volumes
@@ -42,8 +38,6 @@ services:
         pull_policy: never
         build:
             dockerfile: containers/nginx/Dockerfile
-            tags:
-                - banq-backend-web-dev
         depends_on:
             - app
         volumes: *app-volumes
@@ -54,17 +48,14 @@ services:
             FPM_PORT: 9000
 
     testing:
-        pull_policy: never
-        build:
-            <<: *app-build
-            target: testing
-            tags:
-                - banq-backend-app-testing
         profiles:
             - testing
+        pull_policy: never
+        build:
+            dockerfile: containers/php/Dockerfile
+            target: testing
         depends_on:
-            database:
-                condition: service_healthy
+            - database
         secrets:
             -   source: env_file
                 target: /var/www/html/.env
