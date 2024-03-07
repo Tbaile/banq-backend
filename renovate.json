@@ -8,19 +8,5 @@
         "schedule:weekends"
     ],
     "rangeStrategy": "replace",
-    "automergeType": "branch",
-    "packageRules": [
-        {
-            "matchPackageNames": [
-                "php"
-            ],
-            "allowedVersions": "<= 8.2"
-        },
-        {
-            "matchPackageNames": [
-                "postgres"
-            ],
-            "allowedVersions": "<= 15"
-        }
-    ]
+    "automergeType": "branch"
 }
