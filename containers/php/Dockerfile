@@ -46,8 +46,7 @@ RUN install-php-extensions ${PHP_EXTENSIONS} opcache
 COPY containers/php/conf.d "$PHP_INI_DIR/conf.d"
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" \
     && echo "expose_php = off" >> "$PHP_INI_DIR/php.ini" \
-    && echo "access.log = /dev/null" >> "/usr/local/etc/php-fpm.d/zz-docker.conf" \
-    && echo -n "opcache.max_accelerated_files=" >> "$PHP_INI_DIR/conf.d/opcache.ini"
+    && echo "access.log = /dev/null" >> "/usr/local/etc/php-fpm.d/zz-docker.conf"
 # adding container configuration
 ADD --checksum=sha256:206a8f9b2177703fc5aa924d85ad6c72e82413e2d09635b4c9c82a1b65b5b3d5 \
     --chmod=777 \
@@ -65,7 +64,8 @@ RUN composer check-platform-reqs \
     && rm /usr/local/bin/composer \
     && rm /usr/local/sbin/install-php-extensions
 # copy correct acceelerated files in opcache configuration.
-RUN echo $(find . -name "*.php" | wc -l | awk '{print (int($1/1000)+2)*1000}') >> "$PHP_INI_DIR/conf.d/opcache.ini"
+RUN echo -n "opcache.max_accelerated_files=" >> "$PHP_INI_DIR/conf.d/opcache.ini" \
+    && echo $(find . -name "*.php" | wc -l | awk '{print (int($1/1000)+2)*1000}') >> "$PHP_INI_DIR/conf.d/opcache.ini"
 # add volumes needed to be shared thoughout the app containers
 VOLUME ["/var/www/html/bootstrap", "/var/www/html/storage"]
 HEALTHCHECK CMD php artisan health:check --no-notification --do-not-store-results --fail-command-on-failing-check

@@ -1,26 +1,30 @@
+target "base" {
+    cache-from = [
+        "type=gha"
+    ]
+    output = [
+        "type=docker"
+    ]
+}
+
 target "app-production" {
+    inherits = ["base"]
     target     = "production"
     dockerfile = "containers/php/Dockerfile"
     tags       = [
-        "banq-app"
-    ]
-    cache-from = [
-        "type=gha"
+        "ghcr.io/thegardenboys/banq-backend-app:latest"
     ]
 }
 
-## Production Build Specs
 target "web-production" {
+    inherits = ["base"]
     target     = "production"
     dockerfile = "containers/nginx/Dockerfile"
     tags       = [
-        "banq-web"
-    ]
-    cache-from = [
-        "type=gha"
+        "ghcr.io/thegardenboys/banq-backend-web:latest"
     ]
 }
 
-group "production" {
+group "default" {
     targets = ["app-production", "web-production"]
 }

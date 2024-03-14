@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTransactionRequest;
+use App\Http\Resources\TransactionResource;
 use App\Models\Transaction;
 use Illuminate\Http\JsonResponse;
+use Knuckles\Scribe\Attributes\Group;
+use Knuckles\Scribe\Attributes\ResponseFromApiResource;
 use Symfony\Component\HttpFoundation\Response;
 
 class TransactionController extends Controller
@@ -14,13 +17,14 @@ class TransactionController extends Controller
         $this->authorizeResource(Transaction::class);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    #[Group('Transactions')]
+    #[ResponseFromApiResource(TransactionResource::class, Transaction::class, status: Response::HTTP_CREATED)]
     public function store(StoreTransactionRequest $request): JsonResponse
     {
-        Transaction::create($request->validated());
+        $transaction = Transaction::create($request->validated());
 
-        return response()->json()->setStatusCode(Response::HTTP_CREATED);
+        return (new TransactionResource($transaction))
+            ->response()
+            ->setStatusCode(Response::HTTP_CREATED);
     }
 }

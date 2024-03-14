@@ -3,17 +3,13 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Knuckles\Scribe\Attributes\BodyParam;
 
+#[BodyParam('email', description: 'Email used during registration', required: true, example: 'john.doe@example.com')]
+#[BodyParam('password', description: 'Password of the user', required: true, example: 'password')]
+#[BodyParam('device_name', description: 'Recognizable name of the device logging in.', required: true, example: 'Cool Phone')]
 class LoginRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return true;
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
