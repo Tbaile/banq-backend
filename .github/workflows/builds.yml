@@ -57,7 +57,7 @@ jobs:
       - name: Build and Push Images
         uses: docker/bake-action@v4.1.0
         with:
-          targets: production
+          targets: default
           files: |
             ./docker-bake.hcl
             ${{ steps.app-tags.outputs.bake-file }}

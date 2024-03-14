@@ -8,7 +8,7 @@ target "base" {
 }
 
 target "app-production" {
-    inherits = ["base"]
+    inherits   = ["base"]
     target     = "production"
     dockerfile = "containers/php/Dockerfile"
     tags       = [
@@ -17,7 +17,7 @@ target "app-production" {
 }
 
 target "web-production" {
-    inherits = ["base"]
+    inherits   = ["base"]
     target     = "production"
     dockerfile = "containers/nginx/Dockerfile"
     tags       = [
