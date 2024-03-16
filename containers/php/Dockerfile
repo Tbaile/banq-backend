@@ -8,7 +8,7 @@ RUN apk add --no-cache netcat-openbsd
 WORKDIR /var/www/html
 # install required bins
 COPY --from=mlocati/php-extension-installer:2.2.2 /usr/bin/install-php-extensions /usr/local/sbin/
-COPY --from=composer:2.7.1 /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:2.7.2 /usr/bin/composer /usr/local/bin/composer
 
 # copy composer files and install dependencies
 FROM base as vendor
