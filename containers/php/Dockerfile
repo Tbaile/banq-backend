@@ -2,7 +2,7 @@
 ARG PHP_EXTENSIONS="pdo_pgsql"
 
 # base image for all containers
-FROM php:8.3.3-fpm-alpine as base
+FROM php:8.3.4-fpm-alpine as base
 # install required packages
 RUN apk add --no-cache netcat-openbsd
 WORKDIR /var/www/html
