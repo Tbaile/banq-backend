@@ -7,7 +7,7 @@ FROM php:8.3.4-fpm-alpine as base
 RUN apk add --no-cache netcat-openbsd
 WORKDIR /var/www/html
 # install required bins
-COPY --from=mlocati/php-extension-installer:2.2.3 /usr/bin/install-php-extensions /usr/local/sbin/
+COPY --from=mlocati/php-extension-installer:2.2.5 /usr/bin/install-php-extensions /usr/local/sbin/
 COPY --from=composer:2.7.2 /usr/bin/composer /usr/local/bin/composer
 
 # copy composer files and install dependencies
