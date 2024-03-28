@@ -9,17 +9,7 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
-use Knuckles\Scribe\Attributes\Group;
-use Knuckles\Scribe\Attributes\Response;
-use Knuckles\Scribe\Attributes\Unauthenticated;
 
-#[Group('User')]
-#[Unauthenticated]
-#[Response([
-    'data' => [
-        'token' => '1|3YHzxPf4xSVTGn1au3QoUF5UnrcppcYWLvAI2wdX66f959c8'
-    ]
-])]
 class LoginController extends Controller
 {
     public function __invoke(LoginRequest $request): JsonResponse
