@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Resources\TransactionResource;
 use App\Models\Asset;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Gate;
 
 class AssetTransactionController extends Controller
 {
     public function index(Asset $asset): JsonResponse
     {
-        $this->authorize('view', $asset);
+        Gate::authorize('view', $asset);
 
         return TransactionResource::collection(
             $asset->transactions()

@@ -1,33 +1,4 @@
 services:
-    database:
-        image: postgres:16.2-alpine
-        healthcheck:
-            test: [ "CMD", "pg_isready", "-q", "-d", $DB_DATABASE, "-U", $DB_USERNAME ]
-        ports:
-            - "5432:5432"
-        volumes:
-            - database:/var/lib/postgresql/data
-        environment:
-            POSTGRES_DB: $DB_DATABASE
-            POSTGRES_USER: $DB_USERNAME
-            POSTGRES_PASSWORD: $DB_PASSWORD
-    adminer:
-        image: adminer:4.8.1
-        ports:
-            - "8080:8080"
-        environment:
-            ADMINER_DEFAULT_SERVER: database
-    mailpit:
-        image: axllent/mailpit
-        ports:
-            - "8025:8025"
-        volumes:
-            - mailpit:/data
-        environment:
-            MP_MAX_MESSAGES: 5000
-            MP_DATA_FILE: /data/mailpit.db
-            MP_SMTP_AUTH_ACCEPT_ANY: 1
-            MP_SMTP_AUTH_ALLOW_INSECURE: 1
     app:
         pull_policy: never
         build:
@@ -64,17 +35,11 @@ services:
         build:
             dockerfile: containers/php/Dockerfile
             target: testing
-        depends_on:
-            - database
         secrets:
             -   source: env_file
                 target: /var/www/html/.env
-        environment:
-            APP_ENV: testing
-            APP_KEY: base64:2bUUbbptoA/6QgCf/FihBkPS8LyE8spxS74YIEYu+UQ=
 
 volumes:
-    database: { }
     home: { }
     mailpit: { }
 
