@@ -3,7 +3,9 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 /**
@@ -39,6 +41,15 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
+        ]);
+    }
+
+    public function avatar()
+    {
+        $path = Storage::disk('public')->putFile('avatars', UploadedFile::fake()->image('avatar.jpg'));
+
+        return $this->state(fn (array $attributes) => [
+            'avatar' => $path,
         ]);
     }
 }
