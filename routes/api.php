@@ -6,6 +6,7 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\User\LoginController;
 use App\Http\Controllers\User\MeController;
 use App\Http\Controllers\User\RegisterController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('register', RegisterController::class);
@@ -20,4 +21,7 @@ Route::middleware('auth:sanctum')->group(function () {
         ->only(['store']);
     Route::get('/user/me', MeController::class)
         ->name('user.me');
+
+    Route::apiResource('user', UserController::class)
+        ->only(['show', 'update']);
 });
