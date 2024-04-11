@@ -37,6 +37,9 @@ class StoreTransactionRequest extends FormRequest
                 'exists:App\Models\Asset,id',
             ],
             'date' => 'required|date_format:'.DateTimeInterface::ATOM,
+            'latitude' => 'required_with:longitude,address|numeric|between:-90,90',
+            'longitude' => 'required_with:latitude,address|numeric|between:-180,180',
+            'address' => 'required_with:latitude,longitude|string|max:255',
         ];
     }
 }
