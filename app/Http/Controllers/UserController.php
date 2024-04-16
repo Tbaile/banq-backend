@@ -31,6 +31,7 @@ class UserController extends Controller
             $user->avatar = $request->file('avatar')->store('avatars');
         }
         $user->save();
+
         return UserResource::make($user);
     }
 }

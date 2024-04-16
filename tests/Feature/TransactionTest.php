@@ -4,6 +4,7 @@ use App\Models\Asset;
 use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Testing\Fluent\AssertableJson;
+
 use function Pest\Laravel\actingAs;
 
 test('cannot create a description-empty transaction', function () {
@@ -133,9 +134,9 @@ test('list transactions for specific asset', function () {
         ->getJson("/api/asset/{$asset->id}/transaction");
     $response
         ->assertSuccessful()
-        ->assertJson(fn(AssertableJson $json) => $json
+        ->assertJson(fn (AssertableJson $json) => $json
             ->count('data', 15)
-            ->has('data.0', fn(AssertableJson $json) => $json
+            ->has('data.0', fn (AssertableJson $json) => $json
                 ->where('id', $firstTransaction->id)
                 ->where('description', $firstTransaction->description)
                 ->where('amount', $firstTransaction->amount)

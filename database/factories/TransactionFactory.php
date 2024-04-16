@@ -52,7 +52,7 @@ class TransactionFactory extends Factory
         return $this->state([
             'latitude' => $this->faker->latitude(),
             'longitude' => $this->faker->longitude(),
-            'address' => $this->faker->address()
+            'address' => $this->faker->address(),
         ]);
     }
 }
