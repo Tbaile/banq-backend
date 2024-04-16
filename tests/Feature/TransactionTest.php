@@ -4,6 +4,7 @@ use App\Models\Asset;
 use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Testing\Fluent\AssertableJson;
+use function Pest\Laravel\actingAs;
 
 test('cannot create a description-empty transaction', function () {
     $user = User::factory()->create();
@@ -87,6 +88,35 @@ test('create a withdraw', function () {
         'amount' => $transaction->amount,
         'source_asset_id' => $sourceAsset->id,
         'date' => $transaction->date,
+        'latitude' => null,
+        'longitude' => null,
+        'address' => null,
+    ]);
+});
+
+test('save transaction with location', function () {
+    $transaction = Transaction::factory()->address()->withdrawal()->make();
+    $user = $transaction->sourceAsset->user;
+    actingAs($user)
+        ->postJson('/api/transaction', [
+            'description' => $transaction->description,
+            'amount' => $transaction->amount,
+            'source_asset_id' => $transaction->sourceAsset->id,
+            'date' => $transaction->date->toAtomString(),
+            'latitude' => $transaction->latitude,
+            'longitude' => $transaction->longitude,
+            'address' => $transaction->address,
+        ])
+        ->assertCreated();
+    $this->assertDatabaseCount('transactions', 1);
+    $this->assertDatabaseHas('transactions', [
+        'description' => $transaction->description,
+        'amount' => $transaction->amount,
+        'source_asset_id' => $transaction->sourceAsset->id,
+        'date' => $transaction->date,
+        'latitude' => $transaction->latitude,
+        'longitude' => $transaction->longitude,
+        'address' => $transaction->address,
     ]);
 });
 
@@ -103,9 +133,9 @@ test('list transactions for specific asset', function () {
         ->getJson("/api/asset/{$asset->id}/transaction");
     $response
         ->assertSuccessful()
-        ->assertJson(fn (AssertableJson $json) => $json
+        ->assertJson(fn(AssertableJson $json) => $json
             ->count('data', 15)
-            ->has('data.0', fn (AssertableJson $json) => $json
+            ->has('data.0', fn(AssertableJson $json) => $json
                 ->where('id', $firstTransaction->id)
                 ->where('description', $firstTransaction->description)
                 ->where('amount', $firstTransaction->amount)

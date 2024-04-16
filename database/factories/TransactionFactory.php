@@ -46,4 +46,13 @@ class TransactionFactory extends Factory
             'destination_asset_id' => $destination ?? Asset::factory(),
         ]);
     }
+
+    public function address(): self
+    {
+        return $this->state([
+            'latitude' => $this->faker->latitude(),
+            'longitude' => $this->faker->longitude(),
+            'address' => $this->faker->address()
+        ]);
+    }
 }

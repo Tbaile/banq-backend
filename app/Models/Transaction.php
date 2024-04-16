@@ -16,6 +16,9 @@ class Transaction extends Model
         'amount',
         'source_asset_id',
         'date',
+        'latitude',
+        'longitude',
+        'address',
     ];
 
     protected $casts = [
