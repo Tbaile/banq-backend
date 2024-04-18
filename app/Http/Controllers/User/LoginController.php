@@ -21,6 +21,9 @@ class LoginController extends Controller
             ]);
         }
 
+        $user->firebase_token = $request->input('firebase_token');
+        $user->save();
+
         return (new AuthTokenResource($user->createToken($request->input('device_name'))))
             ->response();
     }

@@ -16,6 +16,7 @@ class RegisterController extends Controller
     {
         $user = User::make($request->only('name', 'email'));
         $user->password = Hash::make($request->input('password'));
+        $user->firebase_token = $request->input('firebase_token');
         $user->save();
         $user->refresh();
 
