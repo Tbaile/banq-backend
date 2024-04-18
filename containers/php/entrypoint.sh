@@ -2,6 +2,10 @@
 
 set -e
 
+if [ -f .env ]; then
+    . .env
+fi
+
 if [ "$1" = 'php-fpm' ]; then
     if [ "$APP_ENV" = "local" ]; then
         composer i
