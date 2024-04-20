@@ -2,7 +2,7 @@
 FROM php:8.3.6-fpm-alpine as base
 WORKDIR /var/www/html
 # install extensions and packages
-COPY --from=mlocati/php-extension-installer:2.2.9 /usr/bin/install-php-extensions /usr/local/sbin/
+COPY --from=mlocati/php-extension-installer:2.2.12 /usr/bin/install-php-extensions /usr/local/sbin/
 RUN install-php-extensions \
         gd
 COPY --from=composer:2.7.2 /usr/bin/composer /usr/local/bin/composer
