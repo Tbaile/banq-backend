@@ -5,7 +5,7 @@ WORKDIR /var/www/html
 COPY --from=mlocati/php-extension-installer:2.2.15 /usr/bin/install-php-extensions /usr/local/sbin/
 RUN install-php-extensions \
         gd
-COPY --from=composer:2.7.6 /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:2.7.7 /usr/bin/composer /usr/local/bin/composer
 
 
 FROM base as development
