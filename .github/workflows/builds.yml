@@ -55,7 +55,7 @@ jobs:
           password: ${{ github.token }}
 
       - name: Build and Push Images
-        uses: docker/bake-action@v4.5.0
+        uses: docker/bake-action@v4.6.0
         with:
           targets: default
           files: |
