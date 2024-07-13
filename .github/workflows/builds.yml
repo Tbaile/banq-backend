@@ -11,19 +11,17 @@ permissions:
   packages: write
 
 jobs:
-  images:
-    name: Build production images
+  app:
+    name: Build app image
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
       - name: Setup buildx
         uses: docker/setup-buildx-action@v3
-
-      - name: Generate app tags
+      - name: Generate tags
         uses: docker/metadata-action@v5
-        id: app-tags
+        id: tags
         with:
           bake-target: app-production
           images: |
@@ -33,10 +31,34 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}},enable=${{ !startsWith(github.ref, 'refs/tags/0.') }}
-
-      - name: Generate web tags
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+      - name: Build and Push Image
+        uses: docker/bake-action@v5.3.0
+        with:
+          targets: app-production
+          files: |
+            ./docker-bake.hcl
+            ${{ steps.tags.outputs.bake-file }}
+          set: |
+            app-production.cache-from=type=gha,scope=app-production
+            app-production.cache-to=type=gha,mode=max,scope=app-production
+          push: true
+  web:
+    name: Build web image
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Generate tags
         uses: docker/metadata-action@v5
-        id: web-tags
+        id: tags
         with:
           bake-target: web-production
           images: |
@@ -46,23 +68,20 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}},enable=${{ !startsWith(github.ref, 'refs/tags/0.') }}
-
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ github.token }}
-
-      - name: Build and Push Images
+      - name: Build and Push Image
         uses: docker/bake-action@v5.3.0
         with:
-          targets: default
+          targets: web-production
           files: |
             ./docker-bake.hcl
-            ${{ steps.app-tags.outputs.bake-file }}
-            ${{ steps.web-tags.outputs.bake-file }}
+            ${{ steps.tags.outputs.bake-file }}
           set: |
-            app-production.cache-to=type=gha,mode=max
-            web-production.cache-to=type=gha,mode=max
+            web-production.cache-from=type=gha,scope=web-production
+            web-production.cache-to=type=gha,mode=max,scope=web-production
           push: true

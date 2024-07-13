@@ -1,20 +1,16 @@
 services:
     app:
-        pull_policy: never
         build:
             dockerfile: containers/php/Dockerfile
             target: development
             args:
                 UID: ${UID:-1000}
                 GID: ${GID:-1000}
-        hostname: app
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         volumes: &app-volumes
             - .:/var/www/html
-            - home:/home/www-data
     web:
-        pull_policy: never
         build:
             dockerfile: containers/nginx/Dockerfile
         depends_on:
@@ -25,22 +21,3 @@ services:
         environment:
             FPM_URL: app
             FPM_PORT: 9000
-
-    testing:
-        profiles:
-            - testing
-        pull_policy: never
-        build:
-            dockerfile: containers/php/Dockerfile
-            target: testing
-        secrets:
-            -   source: env_file
-                target: /var/www/html/.env
-
-volumes:
-    home: { }
-    mailpit: { }
-
-secrets:
-    env_file:
-        file: .env
