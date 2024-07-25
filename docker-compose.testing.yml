@@ -1,6 +1,5 @@
 services:
   testing:
-    image: banq-backend-testing
     build:
       dockerfile: containers/php/Dockerfile
       target: testing
