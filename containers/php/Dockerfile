@@ -1,6 +1,6 @@
 # image configuration
-ARG PHP_EXTENSIONS="gd"
-ARG ADDITIONAL_PACKAGES=""
+ARG PHP_EXTENSIONS="gd pdo_pgsql"
+ARG ADDITIONAL_PACKAGES="postgresql-client"
 ARG ADDITIONAL_DEV_PACKAGES=""
 
 # base image for all containers

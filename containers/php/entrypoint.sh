@@ -7,15 +7,18 @@ if [ -f .env ]; then
 fi
 
 if [ "$1" = 'php-fpm' ]; then
+    wait-for "${DB_HOST}:${DB_PORT}" --timeout=60
+    php artisan migrate --force
     if [ "$APP_ENV" = "local" ]; then
         composer i
     else
-        php artisan config:cache
-        php artisan view:cache
+        php artisan optimize
     fi
-    php artisan migrate --force
     php artisan storage:link
-    chown -R www-data:www-data storage
+elif [ "$1" = 'worker' ]; then
+    wait-for "${DB_HOST}:${DB_PORT}" --timeout=60
+    set -- php artisan queue:work --tries=3
 fi
+
 
 exec "$@"
