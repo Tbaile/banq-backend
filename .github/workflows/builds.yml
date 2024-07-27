@@ -38,7 +38,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ github.token }}
       - name: Build and Push Image
-        uses: docker/bake-action@v5.4.0
+        uses: docker/bake-action@v5.5.0
         with:
           targets: app-production
           files: |
@@ -75,7 +75,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ github.token }}
       - name: Build and Push Image
-        uses: docker/bake-action@v5.4.0
+        uses: docker/bake-action@v5.5.0
         with:
           targets: web-production
           files: |
