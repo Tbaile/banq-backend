@@ -1,14 +1,14 @@
 name: banq-prod
 services:
     app:
-        image: ghcr.io/thegardenboys/banq-backend-app:latest
+        image: ghcr.io/tbaile/banq-backend-app:latest
         restart: unless-stopped
         volumes:
             - bootstrap:/var/www/html/bootstrap
             - storage:/var/www/html/storage
         env_file: .env
     web:
-        image: ghcr.io/thegardenboys/banq-backend-web:latest
+        image: ghcr.io/tbaile/banq-backend-web:latest
         restart: unless-stopped
         environment:
             FPM_URL: app
