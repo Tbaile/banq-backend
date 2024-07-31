@@ -1,11 +1,10 @@
 {
     "extends": [
-        "config:base",
-        ":automergeMinor",
+        "config:recommended",
         ":prHourlyLimitNone",
         ":disableDependencyDashboard",
-        ":maintainLockFilesWeekly",
-        "schedule:weekends"
+        "schedule:quarterly",
+        ":enableVulnerabilityAlerts"
     ],
     "rangeStrategy": "replace",
     "automergeType": "branch"
