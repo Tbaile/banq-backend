@@ -1,9 +1,15 @@
 {
-    "name": "laravel/laravel",
+    "name": "tbaile/banq-backend",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
-    "license": "MIT",
+    "description": "BanQ Backend",
+    "keywords": [
+        "laravel",
+        "framework",
+        "backend",
+        "mobile",
+        "banq"
+    ],
+    "license": "AGPL-3.0-or-later",
     "require": {
         "php": "^8.2",
         "ext-gd": "*",
