@@ -7,4 +7,5 @@ ADD --checksum=sha256:206a8f9b2177703fc5aa924d85ad6c72e82413e2d09635b4c9c82a1b65
 COPY containers/nginx/entrypoint.sh /docker-entrypoint.d/90-wait-fpm.sh
 RUN chmod u+x /usr/local/bin/wait-for \
     && chmod +x /docker-entrypoint.d/90-wait-fpm.sh
+COPY public /var/www/html/public
 HEALTHCHECK CMD curl --fail --silent --output /dev/null http://localhost/status
