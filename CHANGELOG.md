@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/Tbaile/banq-backend/compare/v0.2.0...v0.2.1) (2024-08-02)
+
+
+### Bug Fixes
+
+* **build:** you can't have code issues if you don't copy the code ([296ec10](https://github.com/Tbaile/banq-backend/commit/296ec1095bb30395aa350058f9ce9bba7ad26838))
+
 ## [0.2.0](https://github.com/Tbaile/banq-backend/compare/v0.1.0...v0.2.0) (2024-08-02)
 
 
