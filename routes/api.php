@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('register', RegisterController::class);
 Route::post('login', LoginController::class);
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum', 'activity'])->group(function () {
     Route::apiResource('asset', AssetController::class)
         ->only('index', 'show', 'store');
     Route::apiResource('asset.transaction', AssetTransactionController::class)
