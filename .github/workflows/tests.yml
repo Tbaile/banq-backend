@@ -33,7 +33,7 @@ jobs:
         with:
           targets: testing
           files: |
-            ./docker-compose.testing.yml
+            ./docker-compose.yml
           load: true
       - name: Run tests
-        run: docker compose -f docker-compose.testing.yml run testing
+        run: docker compose run testing

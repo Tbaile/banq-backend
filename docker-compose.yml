@@ -1,12 +1,14 @@
 services:
     database:
         image: postgres:16.3-alpine
+        healthcheck:
+            test: [ "CMD-SHELL", "pg_isready -U root" ]
         volumes:
             - database:/var/lib/postgresql/data
         environment:
-            POSTGRES_USER: ${DB_USERNAME}
-            POSTGRES_PASSWORD: ${DB_PASSWORD}
-            POSTGRES_DB: ${DB_DATABASE}
+            POSTGRES_USER: root
+            POSTGRES_PASSWORD: password
+            POSTGRES_DB: banq
     app:
         build:
             dockerfile: containers/php/Dockerfile
@@ -21,14 +23,25 @@ services:
     web:
         build:
             dockerfile: containers/nginx/Dockerfile
-        depends_on:
-            - app
         volumes: *app-volumes
         ports:
             - "80:80"
         environment:
             FPM_URL: app
             FPM_PORT: 9000
+
+    testing:
+        profiles:
+            - testing
+        depends_on:
+            database:
+                condition: service_healthy
+        build:
+            dockerfile: containers/php/Dockerfile
+            target: testing
+            x-bake:
+                cache-from: type=gha,scope=testing
+                cache-to: type=gha,mode=max,scope=testing
 
 volumes:
     database: { }

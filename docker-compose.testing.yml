@@ -1,8 +1,0 @@
-services:
-  testing:
-    build:
-      dockerfile: containers/php/Dockerfile
-      target: testing
-      x-bake:
-        cache-from: type=gha,scope=testing
-        cache-to: type=gha,mode=max,scope=testing
