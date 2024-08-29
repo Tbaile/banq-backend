@@ -2,7 +2,6 @@
     "extends": [
         "config:recommended",
         ":prHourlyLimitNone",
-        ":disableDependencyDashboard",
         "schedule:quarterly",
         ":enableVulnerabilityAlerts"
     ],
