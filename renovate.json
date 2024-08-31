@@ -2,7 +2,7 @@
     "extends": [
         "config:recommended",
         ":prHourlyLimitNone",
-        "schedule:quarterly",
+        "schedule:monthly",
         ":enableVulnerabilityAlerts"
     ],
     "rangeStrategy": "replace",
