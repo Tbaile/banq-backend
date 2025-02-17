@@ -1,10 +1,17 @@
 {
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "extends": [
-        "config:recommended",
+        "config:base",
+        ":automergeMinor",
         ":prHourlyLimitNone",
-        "schedule:monthly",
-        ":enableVulnerabilityAlerts"
+        "schedule:weekends"
     ],
     "rangeStrategy": "replace",
-    "automergeType": "branch"
+    "automergeType": "branch",
+    "vulnerabilityAlerts": {
+        "enabled": true,
+        "assignees": [
+            "@Tbaile"
+        ]
+    }
 }
