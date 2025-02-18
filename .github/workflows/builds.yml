@@ -9,6 +9,7 @@ on:
 permissions:
   contents: write
   packages: write
+  security-events: write
 
 jobs:
   app:
@@ -48,11 +49,19 @@ jobs:
             app-production.cache-from=type=gha,scope=app-production
             app-production.cache-to=type=gha,mode=max,scope=app-production
           push: true
-      - name: Upload SBOM
-        uses: anchore/sbom-action@v0.18.0
+      - uses: anchore/sbom-action@v0.18.0
         with:
           image: ${{ fromJSON(steps.tags.outputs.json).tags[0] }}
           dependency-snapshot: true
+      - uses: anchore/scan-action@v6
+        id: scan
+        with:
+          image: ${{ fromJSON(steps.tags.outputs.json).tags[0] }}
+          fail-build: false
+      - name: Upload vulnerability report
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: ${{ steps.scan.outputs.sarif }}
 
   web:
     name: Build web image
@@ -91,8 +100,16 @@ jobs:
             web-production.cache-from=type=gha,scope=web-production
             web-production.cache-to=type=gha,mode=max,scope=web-production
           push: true
-      - name: Upload SBOM
-        uses: anchore/sbom-action@v0.18.0
+      - uses: anchore/sbom-action@v0.18.0
         with:
           image: ${{ fromJSON(steps.tags.outputs.json).tags[0] }}
           dependency-snapshot: true
+      - uses: anchore/scan-action@v6
+        id: scan
+        with:
+          image: ${{ fromJSON(steps.tags.outputs.json).tags[0] }}
+          fail-build: false
+      - name: Upload vulnerability report
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: ${{ steps.scan.outputs.sarif }}
