@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   packages: write
 
 jobs:
@@ -48,8 +48,12 @@ jobs:
             app-production.cache-from=type=gha,scope=app-production
             app-production.cache-to=type=gha,mode=max,scope=app-production
           push: true
-          sbom: true
-          provenance: true
+      - name: Upload SBOM
+        uses: anchore/sbom-action@v0.18.0
+        with:
+          image: ${{ fromJSON(steps.tags.outputs.json).tags[0] }}
+          dependency-snapshot: true
+
   web:
     name: Build web image
     runs-on: ubuntu-24.04
@@ -87,5 +91,8 @@ jobs:
             web-production.cache-from=type=gha,scope=web-production
             web-production.cache-to=type=gha,mode=max,scope=web-production
           push: true
-          sbom: true
-          provenance: true
+      - name: Upload SBOM
+        uses: anchore/sbom-action@v0.18.0
+        with:
+          image: ${{ fromJSON(steps.tags.outputs.json).tags[0] }}
+          dependency-snapshot: true
