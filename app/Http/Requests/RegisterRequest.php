@@ -17,6 +17,7 @@ class RegisterRequest extends FormRequest
             'name' => 'required|string',
             'email' => 'required|email|unique:App\Models\User,email',
             'password' => 'required',
+            'firebase_token' => 'required|string',
         ];
     }
 }
