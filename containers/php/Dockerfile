@@ -4,7 +4,7 @@ ARG ADDITIONAL_PACKAGES="postgresql-client"
 ARG ADDITIONAL_DEV_PACKAGES=""
 
 # base image for all containers
-FROM php:8.4.6-fpm-alpine AS base
+FROM php:8.4.7-fpm-alpine AS base
 WORKDIR /var/www/html
 # add binaries and container entrypoint
 COPY --from=mlocati/php-extension-installer:2.7.33 /usr/bin/install-php-extensions /usr/local/sbin/
