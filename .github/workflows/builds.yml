@@ -49,7 +49,7 @@ jobs:
             app-production.cache-from=type=gha,scope=app-production
             app-production.cache-to=type=gha,mode=max,scope=app-production
           push: true
-      - uses: anchore/sbom-action@v0.20.0
+      - uses: anchore/sbom-action@v0.20.1
         with:
           image: ${{ fromJSON(steps.tags.outputs.json).tags[0] }}
           dependency-snapshot: true
@@ -100,7 +100,7 @@ jobs:
             web-production.cache-from=type=gha,scope=web-production
             web-production.cache-to=type=gha,mode=max,scope=web-production
           push: true
-      - uses: anchore/sbom-action@v0.20.0
+      - uses: anchore/sbom-action@v0.20.1
         with:
           image: ${{ fromJSON(steps.tags.outputs.json).tags[0] }}
           dependency-snapshot: true
