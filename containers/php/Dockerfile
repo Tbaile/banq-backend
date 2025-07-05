@@ -7,7 +7,7 @@ ARG ADDITIONAL_DEV_PACKAGES=""
 FROM php:8.4.8-fpm-alpine AS base
 WORKDIR /var/www/html
 # add binaries and container entrypoint
-COPY --from=mlocati/php-extension-installer:2.8.2 /usr/bin/install-php-extensions /usr/local/sbin/
+COPY --from=mlocati/php-extension-installer:2.8.4 /usr/bin/install-php-extensions /usr/local/sbin/
 COPY --from=composer:2.8.9 /usr/bin/composer /usr/local/bin/composer
 ADD --chmod=777 \
     --checksum=sha256:206a8f9b2177703fc5aa924d85ad6c72e82413e2d09635b4c9c82a1b65b5b3d5 \
