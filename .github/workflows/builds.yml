@@ -53,7 +53,7 @@ jobs:
         with:
           image: ${{ fromJSON(steps.tags.outputs.json).tags[0] }}
           dependency-snapshot: true
-      - uses: anchore/scan-action@v6
+      - uses: anchore/scan-action@v7
         id: scan
         with:
           image: ${{ fromJSON(steps.tags.outputs.json).tags[0] }}
@@ -104,7 +104,7 @@ jobs:
         with:
           image: ${{ fromJSON(steps.tags.outputs.json).tags[0] }}
           dependency-snapshot: true
-      - uses: anchore/scan-action@v6
+      - uses: anchore/scan-action@v7
         id: scan
         with:
           image: ${{ fromJSON(steps.tags.outputs.json).tags[0] }}
